@@ -19,12 +19,14 @@ services:
       - 5900:5900
 
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: "Dockerfile.${RAILS_ENV}"
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     env_file:
       - .env
     volumes:
-      - .:/rails
+      - .:/app
     ports:
       - ${WEB_PORT:-3001}:3000
     depends_on:
