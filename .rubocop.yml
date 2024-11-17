@@ -1,8 +1,260 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+# This is the configuration used to check the rubocop source code.
 
-# Overwrite or add rules to create your own house style
+inherit_from: .rubocop_todo.yml
+
+inherit_mode:
+  merge:
+    - Exclude
+
+require:
+  #  - rubocop/cop/internal_affairs
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-factory_bot
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
+    - 'tmp/**/*'
+    - 'db/schema.rb'
+  SuggestExtensions: false
+
+#InternalAffairs/NodeMatcherDirective:
+#  Enabled: false
 #
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+## FIXME: Workaround for a false positive caused by this cop when using `bundle exec rake`.
+#InternalAffairs/UndefinedConfig:
+#  Enabled: false
+
+Naming/InclusiveLanguage:
+  Enabled: true
+  CheckStrings: true
+  FlaggedTerms:
+    auto-correct:
+      Suggestions:
+        - autocorrect
+    auto_correct:
+      Suggestions:
+        - autocorrect
+    behaviour:
+      Suggestions:
+        - behavior
+    offence:
+      Suggestions:
+        - offense
+  # These are excluded for compatible API names. RuboCop Rails 3.0 will fix it.
+  Exclude:
+    - lib/rubocop/cop/rails/dynamic_find_by.rb
+    - lib/rubocop/cop/rails/skips_model_validations.rb
+    - spec/rubocop/cop/rails/dynamic_find_by_spec.rb
+    - spec/rubocop/cop/rails/skips_model_validations_spec.rb
+
+Naming/PredicateName:
+  # Method define macros for dynamically generated method.
+  MethodDefinitionMacros:
+    - define_method
+    - define_singleton_method
+    - def_node_matcher
+    - def_node_search
+
+Naming/InclusiveLanguage:
+  CheckComments: false
+
+Naming/FileName:
+  Exclude:
+    - lib/rubocop-rails.rb
+
+
+Rails:
+  Enabled: true
+
+
+Style/FormatStringToken:
+  # Because we parse a lot of source codes from strings. Percent arrays
+  # look like unannotated format string tokens to this cop.
+  Exclude:
+    - spec/**/*
+
+
+Layout/HashAlignment:
+  EnforcedHashRocketStyle:
+    - key
+    - table
+  EnforcedColonStyle:
+    - key
+    - table
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+Layout/ClassStructure:
+  Enabled: true
+  Categories:
+    module_inclusion:
+      - include
+      - prepend
+      - extend
+  ExpectedOrder:
+    - module_inclusion
+    - constants
+    - public_class_methods
+    - initializer
+    - instance_methods
+    - protected_methods
+    - private_methods
+
+Layout/RedundantLineBreak:
+  Enabled: true
+
+# Trailing white space is meaningful in code examples
+Layout/TrailingWhitespace:
+  AllowInHeredoc: true
+
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Lint/InterpolationCheck:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Lint/UselessAccessModifier:
+  MethodCreatingMethods:
+    - 'def_matcher'
+    - 'def_node_matcher'
+
+Lint/EmptyBlock:
+  Exclude:
+    - 'spec/factories/**/*'
+
+Lint/UselessMethodDefinition:
+  Exclude:
+    - 'app/controllers/web/users/*'
+
+Lint/MissingSuper:
+  Exclude:
+    - 'app/services/**/*'
+
+Performance/DeletePrefix:
+  SafeMultiline: false
+
+Performance/DeleteSuffix:
+  SafeMultiline: false
+
+
+RSpec:
+  Language:
+    Expectations:
+      - expect_correction
+      - expect_no_offenses
+      - expect_offense
+      - expect_offense_if_model_file
+
+# This disabling is a workaround for https://github.com/rubocop-hq/rubocop-rails/issues/374.
+FactoryBot/CreateList:
+  Enabled: false
+
+FactoryBot/AssociationStyle:
+  Enabled: false
+
+#RSpec/PredicateMatcher:
+#  EnforcedStyle: explicit
+
+RSpec/NestedGroups:
+  Max: 7
+
+RSpec/ContextWording:
+  Exclude:
+    - 'spec/features/**/*'
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - 'spec/features/**/*'
+
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/features/**/*'
+
+
+Metrics/AbcSize:
+  Max: 30
+  Exclude:
+    - 'db/**/*'
+    - 'app/controllers/web/users/*'
+    - 'app/helpers/web/**/*'
+    - 'lib/generators/**/*'
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+  Exclude:
+    - 'app/helpers/web/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*'
+    - '*.gemspec'
+    - 'config/**/*'
+
+Metrics/MethodLength:
+  Max: 30
+  CountAsOne: ['array', 'hash', 'heredoc']
+  Exclude:
+    - 'db/**/*'
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/GlobalStdStream:
+  Exclude:
+    - 'config/**/*'
+
+
+Layout/LineLength:
+  Exclude:
+    - 'config/**/*'
+
+
+Rails/ApplicationRecord:
+  Enabled: false
+
+Rails/ApplicationController:
+  Enabled: false
+
+Rails/BulkChangeTable:
+  Enabled: false
+
+Rails/RedundantPresenceValidationOnBelongsTo:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'db/migrate/**/*'
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+Rails/OutputSafety:
+  Enabled: false
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
