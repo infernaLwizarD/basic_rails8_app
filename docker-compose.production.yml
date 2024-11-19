@@ -8,20 +8,10 @@ services:
     ports:
       - ${POSTGRES_PORT:-5432}:5432
 
-  selenium_chrome:
-    image: selenium/standalone-chrome:112.0-20230421
-    shm_size: 2gb
-    logging:
-      driver: none
-#    volumes:
-#      - /dev/shm:/dev/shm
-    ports:
-      - 5900:5900
-
   web:
     build:
       context: .
-      dockerfile: "Dockerfile.${RAILS_ENV}"
+      dockerfile: "Dockerfile.production"
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     env_file:
       - .env
@@ -32,11 +22,6 @@ services:
     depends_on:
       - db
       - selenium_chrome
-
-  adminer:
-    image: adminer:4.8.1
-    ports:
-      - ${ADMINER_PORT:-8080}:8080
 
 volumes:
   postgres_data: null
