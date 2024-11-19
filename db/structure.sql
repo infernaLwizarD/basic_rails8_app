@@ -16,6 +16,16 @@ SET row_security = off;
 -- *not* creating schema, since initdb creates it
 
 
+--
+-- Name: user_role; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.user_role AS ENUM (
+    'admin',
+    'user'
+);
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -66,7 +76,8 @@ CREATE TABLE public.users (
     locked_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    username character varying
+    username character varying,
+    role public.user_role
 );
 
 
@@ -162,6 +173,7 @@ CREATE UNIQUE INDEX index_users_on_username ON public.users USING btree (usernam
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241119133206'),
 ('20241119133133'),
 ('20241117122834');
 
