@@ -18,6 +18,7 @@ gem 'stimulus-rails'
 gem 'jbuilder'
 
 gem 'devise'
+gem 'discard', '~> 1.4'
 gem 'pundit'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]

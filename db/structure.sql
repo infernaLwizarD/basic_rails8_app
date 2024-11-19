@@ -77,7 +77,8 @@ CREATE TABLE public.users (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     username character varying,
-    role public.user_role
+    role public.user_role,
+    discarded_at timestamp(6) without time zone
 );
 
 
@@ -139,6 +140,13 @@ CREATE UNIQUE INDEX index_users_on_confirmation_token ON public.users USING btre
 
 
 --
+-- Name: index_users_on_discarded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_discarded_at ON public.users USING btree (discarded_at);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -173,6 +181,7 @@ CREATE UNIQUE INDEX index_users_on_username ON public.users USING btree (usernam
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241119133337'),
 ('20241119133206'),
 ('20241119133133'),
 ('20241117122834');
