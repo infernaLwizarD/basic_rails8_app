@@ -2,7 +2,7 @@ module UserRoleEnum
   extend ActiveSupport::Concern
 
   included do
-    enum role: { admin: 'admin', user: 'user' }
+    enum :role, { admin: 'admin', user: 'user' }, suffix: true
   end
 
   ROLE_LABEL_BY_CODE = { 'admin' => 'Администратор', 'user' => 'Пользователь' }.freeze

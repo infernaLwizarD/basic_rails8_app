@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  # include UserRoleEnum
+  include UserRoleEnum
   include Discard::Model
 
   # Include default devise modules. Others available are:
