@@ -1,7 +1,11 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope.all
+      if user.admin_role?
+        scope.all
+      else
+        scope.by_state('active')
+      end
     end
   end
 
@@ -14,26 +18,30 @@ class UserPolicy < ApplicationPolicy
   end
 
   def create?
-    true
+    user.admin_role?
   end
 
   def update?
-    record.kept? && record.id == user.id
+    record.kept? && if user.admin_role?
+                      true
+                    else
+                      record.id == user.id
+                    end
   end
 
   def destroy?
-    record.kept? && record.id != user.id
+    record.kept? && user.admin_role? && record.id != user.id
   end
 
   def restore?
-    record.discarded? && record.id != user.id
+    record.discarded? && user.admin_role? && record.id != user.id
   end
 
   def lock?
-    record.kept? && !record.locked_at? && record.id != user.id
+    record.kept? && !record.locked_at? && user.admin_role? && record.id != user.id
   end
 
   def unlock?
-    record.kept? && record.locked_at? && record.id != user.id
+    record.kept? && record.locked_at? && user.admin_role? && record.id != user.id
   end
 end

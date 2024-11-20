@@ -8,6 +8,11 @@
         <%= form.text_field :username, rows: 1 %>
       </div>
       <div>
+        <%= form.label :role, "Роль" %>
+        <%= form.select :role, User.user_role_collection,
+                        { include_blank: "[Выберите роль]" } %>
+      </div>
+      <div>
         <%= form.label :email, "Email" %>
         <%= form.text_field :email, rows: 1 %>
       </div>

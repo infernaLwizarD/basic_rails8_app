@@ -76,7 +76,7 @@ class Web::UsersController < Web::ApplicationController
 
   def user_params
     params[:user].delete(:password) if params.dig(:user, :password).blank?
-    attributes = %i[username email password]
+    attributes = %i[username email password role]
 
     if params[:action] == 'create'
       params[:user].delete(:password_confirmation) if params[:user][:password].blank?

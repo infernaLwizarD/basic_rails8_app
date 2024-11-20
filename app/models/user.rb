@@ -8,9 +8,21 @@ class User < ApplicationRecord
          :lockable # , :omniauthable, omniauth_providers: [:google_oauth2]
 
   validates :username, presence: true, format: { with: /^[a-zA-Z0-9_.]*$/, multiline: true }, uniqueness: true
+  validates :role, presence: true
   validate :validate_username
 
   attr_writer :login
+
+  scope :by_state, lambda { |v|
+    case v
+    when 'active'
+      where(discarded_at: nil, locked_at: nil)
+    when 'locked'
+      where(discarded_at: nil).where.not(locked_at: nil)
+    when 'discarded'
+      where.not(discarded_at: nil)
+    end
+  }
 
   before_save do
     username.downcase!
