@@ -23,6 +23,17 @@
   </head>
 
   <body>
+  <% if current_user.present? %>
+    <div id="exit">
+      <%= button_to('Выйти', destroy_user_session_path, method: 'delete') %>
+    </div>
+    <div id="menu">
+      <ul>
+        <li><a href="<%= root_path %>">Главная страница</a></li>
+        <li><a href="<%= users_path %>">Пользователи</a></li>
+      </ul>
+    </div>
+  <% end %>
     <%= yield %>
   </body>
 </html>
