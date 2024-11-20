@@ -1,0 +1,26 @@
+<% if policy(User).create? %>
+  <div><%= link_to('Добавить', new_user_path()) %></div>
+<% end %>
+
+<div>
+  <table id="users-table">
+    <thead>
+    <tr>
+      <th style="width:10px;">ID</th>
+      <th>Имя пользователя</th>
+      <th>E-mail</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.id, user %></td>
+        <td><%= link_to user.username, user %></td>
+        <td><%= link_to user.email, user %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+

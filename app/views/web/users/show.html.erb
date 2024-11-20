@@ -1,0 +1,35 @@
+<h6>Пользователь</h6>
+<div>
+  <div>
+    <div>
+      <label>Имя пользователя</label>
+      <div><%= @user.username %></div>
+    </div>
+    <div>
+      <label>E-mail</label>
+      <div><%= @user.email %></div>
+    </div>
+  </div>
+
+  <div>
+    <% if policy(@user).update? %>
+      <%= button_to('Редактировать', edit_user_path(@user), method: :get) %>
+    <% end %>
+    <% if policy(@user).lock? %>
+      <%= button_to('Заблокировать', lock_user_path(@user)) %>
+    <% end %>
+    <% if policy(@user).unlock? %>
+      <%= button_to('Разблокировать', unlock_user_path(@user)) %>
+    <% end %>
+
+    <%= button_to('Назад', users_path, method: :get) %>
+
+    <% if policy(@user).restore? %>
+      <%= button_to('Восстановить', restore_user_path(@user)) %>
+    <% end %>
+    <% if policy(@user).destroy? %>
+      <%= button_to('Удалить', @user, method: :delete, data: { confirm: 'Вы уверены?' }) %>
+    <% end %>
+  </div>
+</div>
+
