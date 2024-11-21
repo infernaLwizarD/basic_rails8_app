@@ -163,6 +163,8 @@ FactoryBot/AssociationStyle:
 
 #RSpec/PredicateMatcher:
 #  EnforcedStyle: explicit
+RSpec/MetadataStyle:
+  EnforcedStyle: hash
 
 RSpec/NestedGroups:
   Max: 7

@@ -61,6 +61,7 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
 
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'rspec-rails', '~> 7.1.0'
 end
 
@@ -73,4 +74,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
   gem 'selenium-webdriver'
+
+  gem 'email_spec'
+  gem 'webdrivers', require: !ENV['SELENIUM_REMOTE_URL']
 end
