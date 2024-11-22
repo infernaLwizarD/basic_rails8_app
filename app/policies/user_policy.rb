@@ -1,11 +1,12 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      if user.admin_role?
-        scope.all
-      else
-        scope.by_state('active')
-      end
+      scope.all
+      # if user.admin_role?
+      #   scope.all
+      # else
+      #   scope.by_state('active')
+      # end
     end
   end
 

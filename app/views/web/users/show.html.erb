@@ -32,7 +32,7 @@
       <%= button_to('Восстановить', restore_user_path(@user)) %>
     <% end %>
     <% if policy(@user).destroy? %>
-      <%= button_to('Удалить', @user, method: :delete, data: { confirm: 'Вы уверены?' }) %>
+      <%= button_to('Удалить', @user, method: :delete, form: { data: { turbo_confirm: 'Вы уверены?' } }) %>
     <% end %>
   </div>
 </div>
