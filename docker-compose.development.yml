@@ -1,23 +1,4 @@
 services:
-  db:
-    image: postgres:13.9-alpine
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - ${POSTGRES_PORT:-5432}:5432
-
-  selenium_chrome:
-    image: selenium/standalone-chrome:112.0-20230421
-    shm_size: 2gb
-    logging:
-      driver: none
-#    volumes:
-#      - /dev/shm:/dev/shm
-    ports:
-      - 5900:5900
-
   web:
     build:
       context: .
@@ -33,6 +14,16 @@ services:
       - db
       - selenium_chrome
 
+  selenium_chrome:
+    image: selenium/standalone-chrome:112.0-20230421
+    shm_size: 2gb
+    logging:
+      driver: none
+#    volumes:
+#      - /dev/shm:/dev/shm
+    ports:
+      - 5900:5900
+
   mailcatcher:
     image: schickling/mailcatcher
     ports:
@@ -43,6 +34,3 @@ services:
     image: adminer:4.8.1
     ports:
       - ${ADMINER_PORT:-8080}:8080
-
-volumes:
-  postgres_data: null
