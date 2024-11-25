@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   scan_ruby:
@@ -61,16 +61,32 @@ jobs:
         image: postgres
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: 1q2w3e4r
         ports:
           - 5432:5432
-        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+
+      selenium_chrome:
+        image: selenium/standalone-chrome:112.0-20230421
+        ports:
+          - 4444:4444
 
       # redis:
       #   image: redis
       #   ports:
       #     - 6379:6379
       #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      DB_HOST: localhost
+      DB_USER: postgres
+      DB_PASSWORD: 1q2w3e4r
+      SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
 
     steps:
       - name: Install packages
@@ -85,12 +101,19 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+#      - name: Run tests
+#        env:
+#          RAILS_ENV: test
+#          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+#          # REDIS_URL: redis://localhost:6379/0
+#        run: bin/rails db:test:prepare test test:system
+
+      # Add or replace database setup steps here
+      - name: Set up database schema
+        run: bin/rails db:test:prepare
+      # Add or replace test runners here
       - name: Run tests
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test test:system
+        run: bundle exec rspec
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
