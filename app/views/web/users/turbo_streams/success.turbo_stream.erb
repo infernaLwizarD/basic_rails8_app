@@ -1,0 +1,6 @@
+<%= turbo_stream.replace "flash_section" do %>
+  <%= render 'layouts/flash' %>
+<% end %>
+<%= turbo_stream.replace "users_section" do %>
+  <%= render template: "web/users/show" %>
+<% end %>

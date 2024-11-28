@@ -1,9 +1,8 @@
-<% if policy(User).create? %>
-  <div><%= link_to('Добавить', new_user_path()) %></div>
-<% end %>
-
 <div>
   <h1>Пользователи</h1>
+  <% if policy(User).create? %>
+    <div><%= link_to('Добавить', new_user_path(), data: {turbo: false}) %></div>
+  <% end %>
   <table id="users-table">
     <thead>
     <tr>
@@ -16,14 +15,13 @@
     <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= link_to user.id, user %></td>
-        <td><%= link_to user.username, user %></td>
-        <td><%= link_to user.email, user %></td>
-        <td><%= link_to user.user_role_label, user %></td>
+        <td><%= link_to user.id, user, data: { turbo: false } %></td>
+        <td><%= link_to user.username, user, data: { turbo: false } %></td>
+        <td><%= link_to user.email, user, data: { turbo: false } %></td>
+        <td><%= link_to user.user_role_label, user, data: { turbo: false } %></td>
       </tr>
     <% end %>
     </tbody>
   </table>
 </div>
-
 

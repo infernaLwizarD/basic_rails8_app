@@ -1,39 +1,42 @@
-<%= form_with(model: @user) do |form| %>
-  <h6>Пользователь</h6>
-  <div>
+<%= turbo_frame_tag "users_section" do %>
+  <%= form_with(model: @user, local: false) do |form| %>
+    <h6>Пользователь</h6>
     <div>
-      <%= render "web/users/shared/error_messages", resource: @user %>
       <div>
-        <%= form.label :username, "Имя пользователя" %>
-        <%= form.text_field :username, rows: 1 %>
-      </div>
-      <div>
-        <%= form.label :role, "Роль" %>
-        <%= form.select :role, User.user_role_collection,
-                        { include_blank: "[Выберите роль]" } %>
-      </div>
-      <div>
-        <%= form.label :email, "Email" %>
-        <%= form.text_field :email, rows: 1 %>
-      </div>
-      <div>
-        <%= form.label :password, "Пароль" %>
-        <%= form.password_field :password, autocomplete: "off" %>
-        <% if @user.persisted? %>
-          <small class="form-text text-muted">(Оставьте пустым если не хотите менять)</small>
+        <%= render "web/users/shared/error_messages", resource: @user %>
+        <div>
+          <%= form.label :username, "Имя пользователя" %>
+          <%= form.text_field :username, rows: 1 %>
+        </div>
+        <div>
+          <%= form.label :role, "Роль" %>
+          <%= form.select :role, User.user_role_collection,
+                          { include_blank: "[Выберите роль]" } %>
+        </div>
+        <div>
+          <%= form.label :email, "Email" %>
+          <%= form.text_field :email, rows: 1 %>
+        </div>
+        <div>
+          <%= form.label :password, "Пароль" %>
+          <%= form.password_field :password, autocomplete: "off" %>
+          <% if @user.persisted? %>
+            <small class="form-text text-muted">(Оставьте пустым если не хотите менять)</small>
+          <% end %>
+        </div>
+        <% unless @user.persisted? %>
+          <div>
+            <%= form.label :password_confirmation, "Подтверждение пароля" %>
+            <%= form.password_field :password_confirmation, autocomplete: "off" %>
+          </div>
         <% end %>
       </div>
-      <% unless @user.persisted? %>
-        <div>
-          <%= form.label :password_confirmation, "Подтверждение пароля" %>
-          <%= form.password_field :password_confirmation, autocomplete: "off" %>
-        </div>
-      <% end %>
-    </div>
 
-    <div>
-      <%= button_to('Назад', back_path, method: :get) %>
-      <button type="submit">Сохранить</button>
+      <div>
+        <%# puts "\n\n\nback_path",back_path.inspect %>
+        <%= link_to('Назад', back_path, data: { turbo: false }) %>
+        <%= form.submit 'Сохранить' %>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
