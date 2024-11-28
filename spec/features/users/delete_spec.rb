@@ -4,7 +4,11 @@ RSpec.shared_examples 'delete_self_profile' do
   it 'не может удалить свой профиль' do
     within('#users-table') do
       click_link(user.username)
-      expect(page).not_to have_content 'Удалить'
+
+      expect(page.body).not_to include('Удалить')
+      # expect(page).to have_no_content('Удалить') выдаёт
+      # Selenium::WebDriver::Error::StaleElementReferenceError:
+      #        stale element reference: element is not attached to the page document
     end
   end
 end
@@ -63,7 +67,7 @@ RSpec.describe 'Удаление пользователя', js: true, type: :sys
         click_link(some_user.username)
       end
 
-      expect(page).not_to have_content 'Удалить'
+      expect(page).to have_no_content('Удалить')
     end
 
     include_examples 'delete_self_profile'
