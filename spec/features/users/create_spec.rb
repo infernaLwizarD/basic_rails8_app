@@ -32,7 +32,7 @@ RSpec.describe 'Создание нового пользователя', js: tru
     let(:user) { create(:user) }
 
     it 'не создаёт пользователя' do
-      expect(page).to have_css('h1', text: 'Пользователи')
+      expect(page).to have_css('h2', text: 'Пользователи')
       expect(page).not_to have_content 'Добавить'
     end
   end

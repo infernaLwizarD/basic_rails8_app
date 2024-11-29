@@ -23,18 +23,18 @@
   </head>
 
   <body>
-  <%= render 'layouts/flash' %>
-  <% if current_user.present? %>
-    <div id="exit">
-      <%= button_to('Выйти', destroy_user_session_path, method: 'delete') %>
-    </div>
-    <div id="menu" class="main-sidebar">
-      <ul>
-        <li><%= link_to('Главная страница', root_path, data: {turbo: false}) %></li>
-        <li><%= link_to('Пользователи', users_path, data: {turbo: false}) %></li>
-      </ul>
-    </div>
-  <% end %>
+    <%= render 'layouts/flash' %>
+    <% if current_user.present? %>
+      <div id="exit">
+        <%= button_to('Выйти', destroy_user_session_path, method: 'delete') %>
+      </div>
+      <div id="menu" class="main-sidebar">
+        <ul>
+          <li><%= link_to('Главная страница', root_path) %></li>
+          <li><%= link_to('Пользователи', users_path) %></li>
+        </ul>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>

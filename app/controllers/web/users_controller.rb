@@ -1,5 +1,5 @@
 class Web::UsersController < Web::ApplicationController
-  respond_to :html, :json # , :turbo_stream
+  respond_to :html, :json
   before_action :find_and_authorize_user, except: %i[new create index]
 
   def index
@@ -14,10 +14,7 @@ class Web::UsersController < Web::ApplicationController
   def show
     @user.password = nil
 
-    respond_to do |format|
-      format.turbo_stream { render 'web/users/turbo_streams/success' }
-      format.html
-    end
+    respond_with @user
   end
 
   def new
@@ -34,34 +31,19 @@ class Web::UsersController < Web::ApplicationController
     authorize User
 
     @user = User.new(user_params)
-    if @user.save
-      flash[:notice] = 'Пользователь успешно создан'
 
-      respond_to do |format|
-        format.turbo_stream { render 'web/users/turbo_streams/success' }
-        format.html { redirect_to @user }
-      end
-    else
-      respond_to do |format|
-        format.turbo_stream { render 'web/users/turbo_streams/failed' }
-        format.html { render :new }
-      end
-    end
+    flash[:notice] = 'Пользователь успешно создан' if @user.save
+
+    respond_with @user
   end
 
   def update
     if @user.update(user_params)
       flash[:notice] = 'Пользователь отредактирован' if @user.saved_changes?
 
-      respond_to do |format|
-        format.turbo_stream { render 'web/users/turbo_streams/success' }
-        format.html { redirect_to action: :show }
-      end
+      redirect_to action: :show
     else
-      respond_to do |format|
-        format.turbo_stream { render 'web/users/turbo_streams/failed' }
-        format.html { render :edit }
-      end
+      render :edit
     end
   end
 
@@ -69,10 +51,7 @@ class Web::UsersController < Web::ApplicationController
     @user.discard
     flash[:notice] = 'Пользователь удалён'
 
-    respond_to do |format|
-      format.turbo_stream { render 'web/users/turbo_streams/success' }
-      format.html { redirect_to users_path }
-    end
+    respond_with @user
   end
 
   def restore
