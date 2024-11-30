@@ -76,5 +76,6 @@ group :test do
   gem 'selenium-webdriver'
 
   gem 'email_spec'
+  gem 'test-prof', '~> 1.0'
   gem 'webdrivers', require: !ENV['SELENIUM_REMOTE_URL']
 end

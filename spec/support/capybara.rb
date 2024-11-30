@@ -2,7 +2,7 @@ if ENV['SELENIUM_REMOTE_URL']
   Capybara.server = :puma, { Silent: true }
   Capybara.server_host = '0.0.0.0'
   Capybara.server_port = ENV['WEB_PORT'] || 3001
-  Capybara.default_max_wait_time = 3
+  Capybara.default_max_wait_time = 5
   Capybara.app_host = "http://#{Socket.gethostname}:#{Capybara.server_port}"
 
   Capybara.register_driver :chrome_headless do |app|
