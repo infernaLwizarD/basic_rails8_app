@@ -1,26 +1,66 @@
-<h2>Вход в систему</h2>
+<div class="login-box">
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :login, 'Логин' %><br />
-    <%= f.text_field :login %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password, 'Пароль' %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me, 'Запомнить меня' %>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Вход в систему</h3>
     </div>
-  <% end %>
 
-  <div class="actions">
-    <%= f.submit 'Войти' %>
+    <div class="card-body">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <% if notice %>
+          <div class="alert alert-danger alert-dismissible">
+            <%= notice %>
+          </div>
+        <% end %>
+        <% if alert %>
+          <div class="alert alert-danger alert-dismissible">
+            <%= alert %>
+          </div>
+        <% end %>
+
+        <div class="input-group mb-3">
+          <%= f.text_field :login, autofocus: true, autocomplete: "login", class: "form-control form-control-sm",
+                           placeholder: "Логин", required: true %>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          <%= f.password_field :password, autocomplete: "off", class: "form-control form-control-sm",
+                               placeholder: "Пароль", required: true %>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="actions">
+              <%= f.submit "Войти", class: 'btn btn-primary btn-block' %>
+            </div>
+          </div>
+        </div>
+        <% if devise_mapping.rememberable? %>
+          <div class="row">
+            <div class="col">
+              <div class="field mt-2">
+                <%= f.check_box :remember_me %>
+                <%= f.label :remember_me, "Запомнить меня", class: "font-weight-normal" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="card-footer">
+      <%= render "web/users/shared/links" %>
+    </div>
   </div>
-<% end %>
 
-<%= render "web/users/shared/links" %>
+</div>

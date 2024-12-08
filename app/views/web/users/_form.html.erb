@@ -1,40 +1,41 @@
-<%= turbo_frame_tag "users_section" do %>
+<%= turbo_frame_tag 'content_frame' do %>
   <%= form_with(model: @user, local: false) do |form| %>
-    <h6>Пользователь</h6>
-    <div>
-      <div>
+    <h6 class="top-card-title">Пользователь</h6>
+    <div class="card card-primary card-outline">
+      <div class="card-body form-card">
         <%= render "web/users/shared/error_messages", resource: @user %>
-        <div>
+        <div class="form-field">
           <%= form.label :username, "Имя пользователя" %>
-          <%= form.text_field :username, rows: 1 %>
+          <%= form.text_area :username, rows: 1, class: 'form-control form-control-sm w-500 mw-100 resize-h' %>
         </div>
-        <div>
+        <div class="form-field">
+          <%= form.label :email, "Email" %>
+          <%= form.text_area :email, rows: 1, class: 'form-control form-control-sm w-500 mw-100 resize-h' %>
+        </div>
+        <div class="form-field">
           <%= form.label :role, "Роль" %>
           <%= form.select :role, User.user_role_collection,
-                          { include_blank: "[Выберите роль]" } %>
+                          { include_blank: "[Выберите роль]" }, class: "form-control form-control-sm mw-500" %>
         </div>
-        <div>
-          <%= form.label :email, "Email" %>
-          <%= form.text_field :email, rows: 1 %>
-        </div>
-        <div>
+        <div class="form-field">
           <%= form.label :password, "Пароль" %>
-          <%= form.password_field :password, autocomplete: "off" %>
+          <%= form.password_field :password, autocomplete: "off", class: "form-control form-control-sm w-500 mw-100" %>
           <% if @user.persisted? %>
             <small class="form-text text-muted">(Оставьте пустым если не хотите менять)</small>
           <% end %>
         </div>
         <% unless @user.persisted? %>
-          <div>
+          <div class="form-field">
             <%= form.label :password_confirmation, "Подтверждение пароля" %>
-            <%= form.password_field :password_confirmation, autocomplete: "off" %>
+            <%= form.password_field :password_confirmation, autocomplete: "off", class: "form-control form-control-sm w-500 mw-100" %>
           </div>
         <% end %>
       </div>
 
-      <div>
-        <%= link_to('Назад', back_path, data: { turbo: false }) %>
-        <%= form.submit 'Сохранить' %>
+      <div class="card-footer d-flex">
+        <%= draw_back_button(path: back_path) %>
+        <%#= form.submit 'Сохранить' %>
+        <%= draw_save_button %>
       </div>
     </div>
   <% end %>
