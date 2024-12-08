@@ -1,0 +1,12 @@
+<!-- Main Sidebar Container -->
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+  <div class="sidebar-brand">
+    <%= link_to(icon('fas', 'atom', content_tag('span', 'Basic Rails 8 app', class: ['brand-text', 'font-weight-light'])),
+                root_path,
+                class: 'brand-link',
+                data: { turbo: false },
+                role: 'button') %>
+  </div>
+
+  <%= render 'layouts/lte/sidebar_menu' %>
+</aside>

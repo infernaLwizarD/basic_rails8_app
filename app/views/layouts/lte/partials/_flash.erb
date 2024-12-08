@@ -1,0 +1,8 @@
+<div data-controller="autohide">
+  <% flash.each do |type, msg| %>
+    <div class="alert alert-<%= type == 'notice' ? 'info' : 'danger' %>" role="alert">
+      <span class="h5"><%= icon('fas', type == 'notice' ? 'info' : 'exclamation-triangle') %></span>
+      <%= msg %>
+    </div>
+  <% end %>
+</div>

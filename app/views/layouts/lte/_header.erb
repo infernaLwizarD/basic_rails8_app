@@ -1,0 +1,41 @@
+<!-- Navbar -->
+<nav class="app-header navbar navbar-expand bg-body" data-bs-theme="light">
+  <!--begin::Container-->
+  <div class="container-fluid">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <%= link_to(icon('fas', 'bars'), '#', class: 'nav-link', data: {lte_toggle: 'sidebar'}, role: 'button') %>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto user-navbar-menu">
+      <li class="nav-item user-menu">
+        <a href="#" class="nav-link" data-bs-toggle="dropdown">
+          <%= icon('fas', 'user') %>
+          <span class="d-none d-md-inline">&nbsp;<%= current_user.username %></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end">
+        <span class="dropdown-header" style="text-align:left;white-space:normal;">
+            <span><b>E-mail:</b><br><%= current_user.email %></span><br>
+            <span><b>Роль:</b><br><%= current_user.user_role_label %></span><br>
+        </span>
+          <div class="dropdown-divider"></div>
+          <span class="dropdown-item" style="padding-bottom: 10px;">
+            <div class="row">
+                <div class="col">
+                    <%= link_to(icon("fas", "address-card", "Профиль"), user_path(current_user), class: 'btn btn-primary btn-block btn-sm') %>
+                </div>
+                <div class="col">
+                  <%= link_to(icon("fas", "sign-out-alt", "Выйти"), destroy_user_session_path, data: { turbo_method: 'delete'}, class: 'btn btn-warning btn-block btn-sm') %>
+                </div>
+            </div>
+        </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <!--end::Container-->
+</nav>
+<!-- /.navbar -->
