@@ -10,7 +10,7 @@
         <div class="col-sm-6">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><%= link_to('Главная', root_path, data: { turbo: false }) %></li><%# TODO: разобраться почему перестаёт работать PushMenu с turbo %>
+              <li class="breadcrumb-item"><%= link_to('Главная', root_path) %></li>
 
               <% @breadcrumbs.each do |item| %>
                 <% if @breadcrumbs.last == item %>
