@@ -6,7 +6,7 @@ inherit_mode:
   merge:
     - Exclude
 
-require:
+plugins:
   #  - rubocop/cop/internal_affairs
   - rubocop-performance
   - rubocop-rails
@@ -31,6 +31,7 @@ AllCops:
 
 Naming/InclusiveLanguage:
   Enabled: true
+  CheckComments: false
   CheckStrings: true
   FlaggedTerms:
     auto-correct:
@@ -52,16 +53,13 @@ Naming/InclusiveLanguage:
     - spec/rubocop/cop/rails/dynamic_find_by_spec.rb
     - spec/rubocop/cop/rails/skips_model_validations_spec.rb
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   # Method define macros for dynamically generated method.
   MethodDefinitionMacros:
     - define_method
     - define_singleton_method
     - def_node_matcher
     - def_node_search
-
-Naming/InclusiveLanguage:
-  CheckComments: false
 
 Naming/FileName:
   Exclude:
@@ -205,13 +203,18 @@ Metrics/BlockLength:
 
 Metrics/MethodLength:
   Max: 30
-  CountAsOne: ['array', 'hash', 'heredoc']
+  CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
   Exclude:
     - 'db/**/*'
 
 Metrics/ModuleLength:
   Exclude:
     - 'spec/**/*.rb'
+
+Metrics/ClassLength:
+  CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
+  Exclude:
+    - 'db/**/*'
 
 
 Style/FrozenStringLiteralComment:

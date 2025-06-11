@@ -56,13 +56,13 @@ RSpec.describe 'Редактирование пользователя', js: true
     context 'свой профиль' do
       let(:edited_user) { user }
 
-      include_examples 'edit_user'
+      it_behaves_like 'edit_user'
     end
 
     context 'профиль другого пользователя' do
       let(:edited_user) { some_user }
 
-      include_examples 'edit_user'
+      it_behaves_like 'edit_user'
     end
   end
 
@@ -86,7 +86,7 @@ RSpec.describe 'Редактирование пользователя', js: true
     context 'свой профиль' do
       let(:edited_user) { user }
 
-      include_examples 'edit_user'
+      it_behaves_like 'edit_user'
     end
   end
 end

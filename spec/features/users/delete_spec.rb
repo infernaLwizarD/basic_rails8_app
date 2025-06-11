@@ -56,7 +56,7 @@ RSpec.describe 'Удаление пользователя', js: true, type: :sys
       expect(page).to have_content 'Пользователь восстановлен'
     end
 
-    include_examples 'delete_self_profile'
+    it_behaves_like 'delete_self_profile'
   end
 
   context 'Обычный пользователь' do
@@ -75,6 +75,6 @@ RSpec.describe 'Удаление пользователя', js: true, type: :sys
       expect(page).to have_no_content('Удалить')
     end
 
-    include_examples 'delete_self_profile'
+    it_behaves_like 'delete_self_profile'
   end
 end

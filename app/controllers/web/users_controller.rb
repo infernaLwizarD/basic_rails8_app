@@ -8,33 +8,12 @@ class Web::UsersController < Web::ApplicationController
     @users = policy_scope(User)
     @users_cnt = @users.count
 
-    # respond_with @users
-    # @content = render_to_string(partial: :index)
-    # respond_to do |format|
-    #   # format.turbo_stream do
-    #   #   render turbo_stream: [
-    #   #     turbo_stream.replace('breadcrumbs', partial: 'layouts/lte/partials/breadcrumbs'),
-    #   #     turbo_stream.update('flash', partial: 'layouts/lte/partials/flash'),
-    #   #     turbo_stream.replace('content')
-    #   #   ]
-    #   # end
-    #   format.turbo_stream
-    #   format.html
-    # end
-    #
-    # if turbo_frame_request?
-    #   respond_to do |format|
-    #     format.html
-    #   end
-    # else
-    #   render :index
-    # end
     respond_with @users
   end
 
   def show
     @user.password = nil
-    # flash[:notice] = 'show action'
+
     respond_with @user
   end
 
@@ -152,6 +131,6 @@ class Web::UsersController < Web::ApplicationController
       attributes.push(:password_confirmation)
     end
 
-    params.require(:user).permit(attributes)
+    params.expect(user: attributes)
   end
 end

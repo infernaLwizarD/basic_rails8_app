@@ -60,7 +60,7 @@ RSpec.describe 'Блокировка пользователя', js: true, type: 
       expect(page).to have_content 'Пользователь разблокирован'
     end
 
-    include_examples 'lock_self_profile'
+    it_behaves_like 'lock_self_profile'
   end
 
   context 'Обычный пользователь' do
@@ -82,6 +82,6 @@ RSpec.describe 'Блокировка пользователя', js: true, type: 
       expect(page).to have_no_content('Заблокировать')
     end
 
-    include_examples 'lock_self_profile'
+    it_behaves_like 'lock_self_profile'
   end
 end

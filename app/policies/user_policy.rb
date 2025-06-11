@@ -23,11 +23,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    record.kept? && if user.admin_role?
-                      true
-                    else
-                      record.id == user.id
-                    end
+    (record.kept? && user.admin_role?) || record.id == user.id
   end
 
   def destroy?
