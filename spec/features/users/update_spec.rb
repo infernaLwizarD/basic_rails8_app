@@ -43,7 +43,7 @@ RSpec.describe 'Редактирование пользователя', js: true
     logged_as(user)
     visit root_path
 
-    within('.main-sidebar') do
+    within('.sidebar-menu') do
       click_link('Пользователи')
     end
   end

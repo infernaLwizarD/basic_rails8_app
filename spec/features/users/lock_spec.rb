@@ -18,7 +18,7 @@ RSpec.describe 'Блокировка пользователя', js: true, type: 
     logged_as(user)
     visit root_path
 
-    within('.main-sidebar') do
+    within('.sidebar-menu') do
       click_link('Пользователи')
     end
   end
