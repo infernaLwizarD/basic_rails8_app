@@ -13,43 +13,24 @@
   %>
   <%= render 'layouts/lte/partials/breadcrumbs' %>
 
-  <h6 class="top-card-title">Пользователь</h6>
+  <h6 class="top-card-title h5">Пользователь</h6>
   <div class="card card-primary card-outline">
-    <div class="card-body form-card">
+    <div class="card-body form-card d-flex flex-column gap-3">
       <div class="form-field">
-        <label>Имя пользователя</label>
+        <label class="form-label fw-medium">Имя пользователя</label>
         <div><%= @user.username %></div>
       </div>
       <div class="form-field">
-        <label>E-mail</label>
+        <label class="form-label fw-medium">E-mail</label>
         <div><%= @user.email %></div>
       </div>
       <div class="form-field">
-        <label>Роль</label>
+        <label class="form-label fw-medium">Роль</label>
         <div><%= @user.user_role_label %></div>
       </div>
     </div>
 
-    <div class="card-footer d-flex">
-      <%# if policy(@user).update? %>
-      <%#= button_to('Редактировать', edit_user_path(@user), method: :get) %>
-      <%# end %>
-      <%# if policy(@user).lock? %>
-      <%#= button_to('Заблокировать', lock_user_path(@user)) %>
-      <%# end %>
-      <%# if policy(@user).unlock? %>
-      <%#= button_to('Разблокировать', unlock_user_path(@user)) %>
-      <%# end %>
-
-      <%#= button_to('Назад', users_path, method: :get, data: { turbo: false }) %>
-
-      <%# if policy(@user).restore? %>
-      <%#= button_to('Восстановить', restore_user_path(@user)) %>
-      <%# end %>
-      <%# if policy(@user).destroy? %>
-      <%#= button_to('Удалить', @user, method: :delete, form: { data: { turbo_confirm: 'Вы уверены?' } }) %>
-      <%# end %>
-
+    <div class="card-footer d-flex gap-2 align-items-center">
       <% if policy(@user).update? %>
         <%= draw_edit_button(path: edit_user_path(@user)) %>
       <% end %>
@@ -62,12 +43,14 @@
 
       <%= draw_back_button(path: users_path) %>
 
-      <% if policy(@user).restore? %>
-        <%= draw_restore_button(path: restore_user_path(@user)) %>
-      <% end %>
-      <% if policy(@user).destroy? %>
-        <%= draw_delete_button(path: @user) %>
-      <% end %>
+      <div class="ms-auto d-flex gap-2">
+        <% if policy(@user).restore? %>
+          <%= draw_restore_button(path: restore_user_path(@user)) %>
+        <% end %>
+        <% if policy(@user).destroy? %>
+          <%= draw_delete_button(path: @user) %>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

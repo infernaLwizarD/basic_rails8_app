@@ -29,7 +29,7 @@ module ButtonsHelper
   end
 
   def draw_delete_button(options)
-    classes = %i[btn btn-sm btn-danger ml-auto]
+    classes = %i[btn btn-sm btn-danger]
     classes << 'disabled' if options[:disabled].present?
 
     options[:confirm_text] ||= 'Вы уверены?'
@@ -43,7 +43,7 @@ module ButtonsHelper
 
   def draw_save_button(options = {})
     # для кнопки за пределами формы необходимы параметры type="button", onclick="submit()", form="form_name"
-    classes = %i[btn btn-sm border-0 btn-success ml-auto]
+    classes = %i[btn btn-sm border-0 btn-success]
     classes << 'disabled' if options[:disabled].present?
 
     options[:type] ||= 'submit'
@@ -87,7 +87,7 @@ module ButtonsHelper
   end
 
   def draw_restore_button(options)
-    classes = %i[btn btn-sm btn-warning ml-auto]
+    classes = %i[btn btn-sm btn-warning]
     classes << 'disabled' if options[:disabled].present?
     classes << options[:class].split(/\s+/) if options[:class].present?
 

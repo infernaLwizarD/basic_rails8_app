@@ -1,7 +1,7 @@
 <% if @breadcrumbs.present? %>
-  <section class="content-header">
+  <div class="app-content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
+      <div class="row">
         <div class="col-sm-6">
           <% if @main_title.present? %>
             <h2><%= @main_title || '' %></h2>
@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-6">
           <nav aria-label="breadcrumb">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><%= link_to('Главная', root_path) %></li>
 
               <% @breadcrumbs.each do |item| %>
@@ -26,5 +26,5 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 <% end %>
