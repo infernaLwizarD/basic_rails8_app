@@ -1,16 +1,1 @@
-<%= turbo_frame_tag 'content_frame' do %>
-  <%
-    @breadcrumbs = [
-      {
-        title: 'Пользователи',
-        path: users_path
-      },
-      {
-        title: @user.email,
-        path: user_path(@user),
-      },
-    ]
-  %>
-  <%= render 'layouts/lte/partials/breadcrumbs' %>
-  <%= render 'form', back_path: user_path(@user) %>
-<% end %>
+<%= render 'form', back_path: user_path(@user) %>

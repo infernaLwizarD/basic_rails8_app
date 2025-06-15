@@ -1,56 +1,40 @@
-<%= turbo_frame_tag 'content_frame' do %>
-  <%
-    @breadcrumbs = [
-      {
-        title: 'Пользователи',
-        path: users_path
-      },
-      {
-        title: @user.email,
-        path: user_path(@user),
-      },
-    ]
-  %>
-  <%= render 'layouts/lte/partials/breadcrumbs' %>
-
-  <h6 class="top-card-title h5">Пользователь</h6>
-  <div class="card card-primary card-outline">
-    <div class="card-body form-card d-flex flex-column gap-3">
-      <div class="form-field">
-        <label class="form-label fw-medium">Имя пользователя</label>
-        <div><%= @user.username %></div>
-      </div>
-      <div class="form-field">
-        <label class="form-label fw-medium">E-mail</label>
-        <div><%= @user.email %></div>
-      </div>
-      <div class="form-field">
-        <label class="form-label fw-medium">Роль</label>
-        <div><%= @user.user_role_label %></div>
-      </div>
+<h6 class="top-card-title h5">Пользователь</h6>
+<div class="card card-primary card-outline">
+  <div class="card-body form-card d-flex flex-column gap-3">
+    <div class="form-field">
+      <label class="form-label fw-medium">Имя пользователя</label>
+      <div><%= @user.username %></div>
     </div>
-
-    <div class="card-footer d-flex gap-2 align-items-center">
-      <% if policy(@user).update? %>
-        <%= draw_edit_button(path: edit_user_path(@user)) %>
-      <% end %>
-      <% if policy(@user).lock? %>
-        <%= link_to(icon('fas', 'lock', 'Заблокировать'), lock_user_path(@user), class: 'btn btn-sm btn-warning', data: { turbo_method: :post }) %>
-      <% end %>
-      <% if policy(@user).unlock? %>
-        <%= link_to(icon('fas', 'unlock', 'Разблокировать'), unlock_user_path(@user), class: 'btn btn-sm btn-warning', data: { turbo_method: :post }) %>
-      <% end %>
-
-      <%= draw_back_button(path: users_path) %>
-
-      <div class="ms-auto d-flex gap-2">
-        <% if policy(@user).restore? %>
-          <%= draw_restore_button(path: restore_user_path(@user)) %>
-        <% end %>
-        <% if policy(@user).destroy? %>
-          <%= draw_delete_button(path: @user) %>
-        <% end %>
-      </div>
+    <div class="form-field">
+      <label class="form-label fw-medium">E-mail</label>
+      <div><%= @user.email %></div>
+    </div>
+    <div class="form-field">
+      <label class="form-label fw-medium">Роль</label>
+      <div><%= @user.user_role_label %></div>
     </div>
   </div>
-<% end %>
+
+  <div class="card-footer d-flex gap-2 align-items-center">
+    <% if policy(@user).update? %>
+      <%= draw_edit_button(path: edit_user_path(@user)) %>
+    <% end %>
+    <% if policy(@user).lock? %>
+      <%= ts_link_to(icon('fas', 'lock', 'Заблокировать'), lock_user_path(@user), class: 'btn btn-sm btn-warning', data: { turbo_method: :post }) %>
+    <% end %>
+    <% if policy(@user).unlock? %>
+      <%= ts_link_to(icon('fas', 'unlock', 'Разблокировать'), unlock_user_path(@user), class: 'btn btn-sm btn-warning', data: { turbo_method: :post }) %>
+    <% end %>
+
+    <%= draw_back_button(path: users_path) %>
+
+    <div class="ms-auto d-flex gap-2">
+      <% if policy(@user).restore? %>
+        <%= draw_restore_button(path: restore_user_path(@user)) %>
+      <% end %>
+      <% if policy(@user).destroy? %>
+        <%= draw_delete_button(path: @user) %>
+      <% end %>
+    </div>
+  </div>
+</div>
