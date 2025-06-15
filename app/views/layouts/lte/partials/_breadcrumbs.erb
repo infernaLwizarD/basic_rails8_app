@@ -10,15 +10,15 @@
         <div class="col-sm-6">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb float-sm-end">
-              <li class="breadcrumb-item"><%= link_to('Главная', root_path) %></li>
+              <li class="breadcrumb-item"><%= ts_link_to('Главная', root_path) %></li>
 
-              <% @breadcrumbs.each do |item| %>
+              <% @breadcrumbs&.each do |item| %>
                 <% if @breadcrumbs.last == item %>
                   <li class="breadcrumb-item active" aria-current="page"><%= item[:title] %></li>
                 <% elsif item[:path].blank? %>
                   <li class="breadcrumb-item"><%= item[:title] %></li>
                 <% else %>
-                  <li class="breadcrumb-item"><%= link_to(item[:title], item[:path]) %></li>
+                  <li class="breadcrumb-item"><%= ts_link_to(item[:title], item[:path]) %></li>
                 <% end %>
               <% end %>
             </ol>

@@ -9,10 +9,9 @@
     >
       <!--<li class="nav-header">Nav Header</li>-->
       <li class="nav-item">
-        <%= link_to(icon('nav-icon fas', 'users', content_tag('p', 'Пользователи')),
+        <%= ts_link_to(icon('nav-icon fas', 'users', content_tag('p', 'Пользователи')),
                     users_path,
-                    class: 'nav-link',
-                    data: { turbo_frame: 'content_frame' }) %>
+                    class: 'nav-link') %>
       </li>
     </ul>
     <!--end::Sidebar Menu-->

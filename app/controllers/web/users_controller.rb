@@ -8,23 +8,97 @@ class Web::UsersController < Web::ApplicationController
     @users = policy_scope(User)
     @users_cnt = @users.count
 
-    respond_with @users
+    @main_title = 'Пользователи'
+    @breadcrumbs = [
+      {
+        title: 'Пользователи'
+      }
+    ]
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream do
+        render turbo_stream: [
+          render_turbo_breadcrumbs,
+          turbo_stream.update('content', template: 'web/users/index')
+        ]
+      end
+    end
   end
 
   def show
     @user.password = nil
 
-    respond_with @user
+    @breadcrumbs = [
+      {
+        title: 'Пользователи',
+        path: users_path
+      },
+      {
+        title: @user.email,
+        path: user_path(@user)
+      }
+    ]
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          render_turbo_breadcrumbs,
+          turbo_stream.update('content', template: 'web/users/show')
+        ]
+      end
+      format.html
+    end
+    # respond_with @user
   end
 
   def new
     authorize User
 
     @user = User.new
-    respond_with @user
+
+    @breadcrumbs = [
+      {
+        title: 'Пользователи',
+        path: users_path
+      },
+      {
+        title: 'Новый пользователь'
+      }
+    ]
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          render_turbo_breadcrumbs,
+          turbo_stream.update('content', template: 'web/users/new')
+        ]
+      end
+      format.html
+    end
   end
 
   def edit
+    @breadcrumbs = [
+      {
+        title: 'Пользователи',
+        path: users_path
+      },
+      {
+        title: @user.email,
+        path: user_path(@user)
+      }
+    ]
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          render_turbo_flash,
+          turbo_stream.update('content', template: 'web/users/edit')
+        ]
+      end
+      format.html
+    end
   end
 
   def create
@@ -34,13 +108,11 @@ class Web::UsersController < Web::ApplicationController
 
     flash.now[:notice] = 'Пользователь успешно создан' if @user.save
 
-    # respond_with @user
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          render_turbo_breadcrumbs,
           render_turbo_flash,
-          turbo_stream.update('content_frame', template: 'web/users/show')
+          turbo_stream.update('content', template: 'web/users/show')
         ]
       end
       format.html
@@ -54,14 +126,12 @@ class Web::UsersController < Web::ApplicationController
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
-            render_turbo_breadcrumbs,
             render_turbo_flash,
-            turbo_stream.update('content_frame', template: 'web/users/show')
+            turbo_stream.update('content', template: 'web/users/show')
           ]
         end
         format.html { redirect_to action: :show }
       end
-      # redirect_to action: :show
     else
       render :edit
     end
@@ -73,7 +143,10 @@ class Web::UsersController < Web::ApplicationController
     flash.now[:alert] = 'Пользователь удалён'
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: [turbo_stream.update('content_frame', template: 'web/users/show'), render_turbo_flash]
+        render turbo_stream: [
+          render_turbo_flash,
+          turbo_stream.update('content', template: 'web/users/show')
+        ]
       end
       format.html { redirect_to action: :show }
     end
@@ -85,7 +158,10 @@ class Web::UsersController < Web::ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: [turbo_stream.update('content_frame', template: 'web/users/show'), render_turbo_flash]
+        render turbo_stream: [
+          render_turbo_flash,
+          turbo_stream.update('content', template: 'web/users/show')
+        ]
       end
       format.html { redirect_to action: :show }
     end
@@ -97,7 +173,10 @@ class Web::UsersController < Web::ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: [turbo_stream.update('content_frame', template: 'web/users/show'), render_turbo_flash]
+        render turbo_stream: [
+          render_turbo_flash,
+          turbo_stream.update('content', template: 'web/users/show')
+        ]
       end
       format.html { redirect_to action: :show }
     end
@@ -109,7 +188,10 @@ class Web::UsersController < Web::ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: [turbo_stream.update('content_frame', template: 'web/users/show'), render_turbo_flash]
+        render turbo_stream: [
+          render_turbo_flash,
+          turbo_stream.update('content', template: 'web/users/show')
+        ]
       end
       format.html { redirect_to action: :show }
     end
