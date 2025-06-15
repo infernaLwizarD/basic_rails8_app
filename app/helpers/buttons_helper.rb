@@ -7,9 +7,9 @@ module ButtonsHelper
     options[:path] ||= '#'
 
     if options[:method].present?
-      link_to(options[:text], options[:path], method: options[:method], class: classes.join(' ')).html_safe
+      ts_link_to(options[:text], options[:path], method: options[:method], class: classes.join(' ')).html_safe
     else
-      link_to(options[:text], options[:path], class: classes.join(' ')).html_safe
+      ts_link_to(options[:text], options[:path], class: classes.join(' ')).html_safe
     end
   end
 
@@ -17,7 +17,7 @@ module ButtonsHelper
     classes = %i[btn btn-sm btn-primary]
     classes << 'disabled' if options[:disabled].present?
 
-    link_to(icon('fas', 'edit', 'Редактировать'), options[:path], class: classes.join(' '))
+    ts_link_to(icon('fas', 'edit', 'Редактировать'), options[:path], class: classes.join(' '))
   end
 
   def draw_back_button(options)
@@ -25,7 +25,7 @@ module ButtonsHelper
     classes << 'disabled' if options[:disabled].present?
     classes << options[:class].split(/\s+/) if options[:class].present?
 
-    link_to(icon('fas', 'arrow-left', 'Назад'), options[:path], class: classes.join(' '))
+    ts_link_to(icon('fas', 'arrow-left', 'Назад'), options[:path], class: classes.join(' '))
   end
 
   def draw_delete_button(options)
@@ -33,7 +33,7 @@ module ButtonsHelper
     classes << 'disabled' if options[:disabled].present?
 
     options[:confirm_text] ||= 'Вы уверены?'
-    link_to(
+    ts_link_to(
       icon('fas', 'trash-alt', 'Удалить'),
       options[:path],
       data: { turbo_confirm: options[:confirm_text], turbo_method: :delete },
@@ -75,14 +75,14 @@ module ButtonsHelper
 
     if options[:button].present?
       %(
-      #{link_to(%(
+      #{ts_link_to(%(
           <button type="button" class="#{class_prop}">
             #{icon('fas', options[:icon], options[:label])}
           </button>
         ).html_safe, options[:path])}
       ).html_safe
     else
-      link_to(icon('fas', options[:icon], options[:label]), options[:path], class: class_prop)
+      ts_link_to(icon('fas', options[:icon], options[:label]), options[:path], class: class_prop)
     end
   end
 
@@ -91,7 +91,7 @@ module ButtonsHelper
     classes << 'disabled' if options[:disabled].present?
     classes << options[:class].split(/\s+/) if options[:class].present?
 
-    link_to(icon('fas', 'trash-restore', 'Восстановить'), options[:path], class: classes.join(' '),
-                                                                          data: { turbo_method: :post })
+    ts_link_to(icon('fas', 'trash-restore', 'Восстановить'), options[:path], class: classes.join(' '),
+                                                                             data: { turbo_method: :post })
   end
 end
