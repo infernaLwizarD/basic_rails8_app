@@ -1,5 +1,5 @@
 class Web::UsersController < Web::ApplicationController
-  respond_to :html, :json # , :turbo_stream
+  # respond_to :html, :json # , :turbo_stream
   before_action :find_and_authorize_user, except: %i[new create index]
 
   def index
@@ -15,15 +15,7 @@ class Web::UsersController < Web::ApplicationController
       }
     ]
 
-    respond_to do |format|
-      format.html
-      format.turbo_stream do
-        render turbo_stream: [
-          render_turbo_breadcrumbs,
-          turbo_stream.update('content', template: 'web/users/index')
-        ]
-      end
-    end
+    render_turbo_response('web/users/index', breadcrumbs: true)
   end
 
   def show
@@ -40,16 +32,7 @@ class Web::UsersController < Web::ApplicationController
       }
     ]
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          render_turbo_breadcrumbs,
-          turbo_stream.update('content', template: 'web/users/show')
-        ]
-      end
-      format.html
-    end
-    # respond_with @user
+    render_turbo_response('web/users/show', breadcrumbs: true)
   end
 
   def new
@@ -67,15 +50,7 @@ class Web::UsersController < Web::ApplicationController
       }
     ]
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          render_turbo_breadcrumbs,
-          turbo_stream.update('content', template: 'web/users/new')
-        ]
-      end
-      format.html
-    end
+    render_turbo_response('web/users/new', breadcrumbs: true)
   end
 
   def edit
@@ -90,15 +65,7 @@ class Web::UsersController < Web::ApplicationController
       }
     ]
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          render_turbo_flash,
-          turbo_stream.update('content', template: 'web/users/edit')
-        ]
-      end
-      format.html
-    end
+    render_turbo_response('web/users/edit', flash: true)
   end
 
   def create
@@ -108,32 +75,16 @@ class Web::UsersController < Web::ApplicationController
 
     flash.now[:notice] = 'Пользователь успешно создан' if @user.save
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          render_turbo_flash,
-          turbo_stream.update('content', template: 'web/users/show')
-        ]
-      end
-      format.html
-    end
+    render_turbo_response('web/users/show')
   end
 
   def update
     if @user.update(user_params)
       flash.now[:notice] = 'Пользователь отредактирован' if @user.saved_changes?
 
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: [
-            render_turbo_flash,
-            turbo_stream.update('content', template: 'web/users/show')
-          ]
-        end
-        format.html { redirect_to action: :show }
-      end
+      render_turbo_response('web/users/show', flash: true)
     else
-      render :edit
+      render_turbo_response('web/users/edit')
     end
   end
 
@@ -141,60 +92,29 @@ class Web::UsersController < Web::ApplicationController
     @user.discard
 
     flash.now[:alert] = 'Пользователь удалён'
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          render_turbo_flash,
-          turbo_stream.update('content', template: 'web/users/show')
-        ]
-      end
-      format.html { redirect_to action: :show }
-    end
+
+    render_turbo_response('web/users/show', flash: true)
   end
 
   def restore
     @user.undiscard!
     flash.now[:notice] = 'Пользователь восстановлен'
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          render_turbo_flash,
-          turbo_stream.update('content', template: 'web/users/show')
-        ]
-      end
-      format.html { redirect_to action: :show }
-    end
+    render_turbo_response('web/users/show', flash: true)
   end
 
   def lock
     @user.lock_access!(send_instructions: false)
     flash.now[:notice] = 'Пользователь заблокирован'
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          render_turbo_flash,
-          turbo_stream.update('content', template: 'web/users/show')
-        ]
-      end
-      format.html { redirect_to action: :show }
-    end
+    render_turbo_response('web/users/show', flash: true)
   end
 
   def unlock
     @user.unlock_access!
     flash.now[:notice] = 'Пользователь разблокирован'
 
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          render_turbo_flash,
-          turbo_stream.update('content', template: 'web/users/show')
-        ]
-      end
-      format.html { redirect_to action: :show }
-    end
+    render_turbo_response('web/users/show', flash: true)
   end
 
   private
