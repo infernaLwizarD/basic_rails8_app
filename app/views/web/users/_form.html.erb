@@ -2,23 +2,26 @@
   <h6 class="top-card-title h5">Пользователь</h6>
   <div class="card card-primary card-outline">
     <div class="card-body form-card d-flex flex-column gap-3">
-      <%= render "web/users/shared/error_messages", resource: @user %>
       <div class="form-field">
-        <%= form.label :username, "Имя пользователя", class: 'form-label fw-medium' %>
-        <%= form.text_area :username, rows: 1, class: 'form-control form-control-sm w-500 mw-100 resize-h' %>
+        <%= form.label :username, 'Имя пользователя', class: 'form-label fw-medium' %>
+        <%= form.text_area :username, rows: 1, class: field_class(@user, :username) + ' resize-h' %>
+        <%= error_message_for(@user, :username) %>
       </div>
       <div class="form-field">
-        <%= form.label :email, "Email", class: 'form-label fw-medium' %>
-        <%= form.text_area :email, rows: 1, class: 'form-control form-control-sm w-500 mw-100 resize-h' %>
+        <%= form.label :email, 'Email', class: 'form-label fw-medium' %>
+        <%= form.text_area :email, rows: 1, class: field_class(@user, :email) + ' resize-h' %>
+        <%= error_message_for(@user, :email) %>
       </div>
       <div class="form-field">
-        <%= form.label :role, "Роль", class: 'form-label fw-medium' %>
+        <%= form.label :role, 'Роль', class: 'form-label fw-medium' %>
         <%= form.select :role, User.user_role_collection,
-                        { include_blank: "[Выберите роль]" }, class: "form-control form-control-sm mw-500" %>
+                        { include_blank: "[Выберите роль]" }, class: field_class(@user, :role) %>
+        <%= error_message_for(@user, :role) %>
       </div>
       <div class="form-field">
-        <%= form.label :password, "Пароль", class: 'form-label fw-medium' %>
-        <%= form.password_field :password, autocomplete: "off", class: "form-control form-control-sm w-500 mw-100" %>
+        <%= form.label :password, 'Пароль', class: 'form-label fw-medium' %>
+        <%= form.password_field :password, autocomplete: "off", class: field_class(@user, :password) %>
+        <%= error_message_for(@user, :password) %>
         <% if @user.persisted? %>
           <small class="form-text text-muted">(Оставьте пустым если не хотите менять)</small>
         <% end %>
@@ -26,7 +29,8 @@
       <% unless @user.persisted? %>
         <div class="form-field fw-medium">
           <%= form.label :password_confirmation, "Подтверждение пароля", class: 'form-label' %>
-          <%= form.password_field :password_confirmation, autocomplete: "off", class: "form-control form-control-sm w-500 mw-100" %>
+          <%= form.password_field :password_confirmation, autocomplete: "off", class: field_class(@user, :password_confirmation) %>
+          <%= error_message_for(@user, :password_confirmation) %>
         </div>
       <% end %>
     </div>
