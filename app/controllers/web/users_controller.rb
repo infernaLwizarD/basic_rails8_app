@@ -9,11 +9,7 @@ class Web::UsersController < Web::ApplicationController
     @users_cnt = @users.count
 
     @main_title = 'Пользователи'
-    @breadcrumbs = [
-      {
-        title: 'Пользователи'
-      }
-    ]
+    set_user_breadcrumbs
 
     render_turbo_response('web/users/index', breadcrumbs: true)
   end
@@ -21,16 +17,7 @@ class Web::UsersController < Web::ApplicationController
   def show
     @user.password = nil
 
-    @breadcrumbs = [
-      {
-        title: 'Пользователи',
-        path: users_path
-      },
-      {
-        title: @user.email,
-        path: user_path(@user)
-      }
-    ]
+    set_user_breadcrumbs({ title: @user.email, path: user_path(@user) })
 
     render_turbo_response('web/users/show', breadcrumbs: true)
   end
@@ -40,30 +27,13 @@ class Web::UsersController < Web::ApplicationController
 
     @user = User.new
 
-    @breadcrumbs = [
-      {
-        title: 'Пользователи',
-        path: users_path
-      },
-      {
-        title: 'Новый пользователь'
-      }
-    ]
+    set_user_breadcrumbs({ title: 'Новый пользователь' })
 
     render_turbo_response('web/users/new', breadcrumbs: true)
   end
 
   def edit
-    @breadcrumbs = [
-      {
-        title: 'Пользователи',
-        path: users_path
-      },
-      {
-        title: @user.email,
-        path: user_path(@user)
-      }
-    ]
+    set_user_breadcrumbs({ title: @user.email, path: user_path(@user) })
 
     render_turbo_response('web/users/edit', flash: true)
   end
@@ -134,5 +104,12 @@ class Web::UsersController < Web::ApplicationController
     end
 
     params.expect(user: attributes)
+  end
+
+  def set_user_breadcrumbs(additional = nil)
+    @breadcrumbs = [
+      { title: 'Пользователи', path: users_path }
+    ]
+    @breadcrumbs << additional if additional
   end
 end
