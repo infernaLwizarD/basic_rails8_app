@@ -43,9 +43,14 @@ class Web::UsersController < Web::ApplicationController
 
     @user = User.new(user_params)
 
-    flash.now[:notice] = 'Пользователь успешно создан' if @user.save
-
-    render_turbo_response('web/users/show')
+    if @user.save
+      flash.now[:notice] = 'Пользователь успешно создан'
+      set_user_breadcrumbs({ title: @user.email, path: user_path(@user) })
+      render_turbo_response('web/users/show', breadcrumbs: true, flash: true)
+    else
+      set_user_breadcrumbs({ title: 'Новый пользователь' })
+      render_turbo_response('web/users/new', breadcrumbs: true)
+    end
   end
 
   def update
