@@ -67,7 +67,7 @@ module ButtonsHelper
     classes = %i[btn btn-sm]
     classes << 'disabled' if options[:disabled].present?
 
-    classes << (options[:bg_class].presence || 'btn-light')
+    classes << (options[:bg_class].presence || 'btn-outline-primary')
 
     class_prop = classes.join(' ')
     options[:label] ||= 'Добавить'

@@ -5,7 +5,7 @@ class Web::UsersController < Web::ApplicationController
   def index
     authorize User
 
-    @users = policy_scope(User)
+    @users = policy_scope(User).order(:created_at)
     @users_cnt = @users.count
 
     @main_title = 'Пользователи'
