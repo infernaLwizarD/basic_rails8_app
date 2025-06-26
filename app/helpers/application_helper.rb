@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   def ts_link_to(name, path, options = {})
     options[:data] ||= {}
     options[:data][:turbo_stream] = true

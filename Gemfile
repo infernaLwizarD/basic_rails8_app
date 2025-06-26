@@ -19,6 +19,7 @@ gem 'jbuilder'
 
 gem 'devise'
 gem 'discard', '~> 1.4'
+gem 'pagy', '~> 9.3' # omit patch digit
 gem 'pundit'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]

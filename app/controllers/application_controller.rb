@@ -3,4 +3,5 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   include Pundit::Authorization
+  include Pagy::Backend
 end

@@ -111,6 +111,13 @@ Layout/RedundantLineBreak:
 Layout/TrailingWhitespace:
   AllowInHeredoc: true
 
+Layout/LineLength:
+  Exclude:
+    - 'config/**/*'
+
+Layout/EmptyLines:
+  Enabled: false
+
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
@@ -230,11 +237,6 @@ Style/ClassAndModuleChildren:
   Enabled: false
 
 Style/GlobalStdStream:
-  Exclude:
-    - 'config/**/*'
-
-
-Layout/LineLength:
   Exclude:
     - 'config/**/*'
 
