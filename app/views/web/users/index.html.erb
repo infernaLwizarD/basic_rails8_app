@@ -2,19 +2,18 @@
   <div class="col-md-12">
 
     <div class="card">
-      <div class="card-header accent-purple">
-        <div class="row">
-          <div class="col-md-11">
-            <div class="row">
-              <% if policy(User).create? %>
-                <div class="col-md-auto"><%= draw_new_button(path: new_user_path(), button: true) %></div>
-              <% end %>
-            </div>
+      <div class="card-header accent-purple overflow-auto">
+        <div class="d-flex align-items-center gap-3">
+          <% if policy(User).create? %>
+            <%= draw_new_button(path: new_user_path(), button: true) %>
+          <% end %>
+          <div class="ms-auto">
+            <%== pagy_bootstrap_nav_custom(@pagy) %>
           </div>
         </div>
       </div>
 
-      <div class="card-body p-0" style="max-height:700px;overflow:auto;">
+      <div class="card-body p-0 overflow-auto mh-700">
         <table id="users-table" class="table table-striped table-bordered">
           <thead>
           <tr>

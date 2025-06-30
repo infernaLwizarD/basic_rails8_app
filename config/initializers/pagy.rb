@@ -11,8 +11,13 @@
 # Pagy.new|Pagy::Countless.new|Pagy::Calendar::*.new or any of the #pagy* controller methods
 # Here are the few that make more sense as DEFAULTs:
 # Pagy::DEFAULT[:limit]       = 20                    # default
-# Pagy::DEFAULT[:size]        = 7                     # default
-# Pagy::DEFAULT[:ends]        = true                  # default
+Pagy::DEFAULT[:size] = [1, 1, 1, 1] # default - 7
+# Например массив [1,2,2,1] означает:
+# 1 - количество страниц в начале (первая страница)
+# 2 - количество страниц слева от текущей
+# 2 - количество страниц справа от текущей
+# 1 - количество страниц в конце (последняя страница)
+Pagy::DEFAULT[:ends] = true # default
 # Pagy::DEFAULT[:page_param]  = :page                 # default
 # Pagy::DEFAULT[:count_args]  = []                    # example for non AR ORMs
 # Pagy::DEFAULT[:max_pages]   = 3000                  # example
@@ -26,7 +31,7 @@
 
 # Size extra: Enable the Array type for the `:size` variable (e.g. `size: [1,4,4,1]`)
 # See https://ddnexus.github.io/pagy/docs/extras/size
-# require 'pagy/extras/size'   # must be required before the other extras
+require 'pagy/extras/size' # must be required before the other extras
 
 
 # Backend Extras
@@ -73,7 +78,7 @@
 
 # Headers extra: http response headers (and other helpers) useful for API pagination
 # See https://ddnexus.github.io/pagy/docs/extras/headers
-# require 'pagy/extras/headers'
+require 'pagy/extras/headers'
 # Pagy::DEFAULT[:headers] = { page: 'Current-Page',
 #                            limit: 'Page-Items',
 #                            count: 'Total-Count',
@@ -96,9 +101,10 @@
 # See https://ddnexus.github.io/pagy/docs/extras/metadata
 # you must require the JS Tools internal extra (BEFORE the metadata extra) ONLY if you need also the :sequels
 # require 'pagy/extras/js_tools'
-# require 'pagy/extras/metadata'
+require 'pagy/extras/metadata'
 # For performance reasons, you should explicitly set ONLY the metadata you use in the frontend
 # Pagy::DEFAULT[:metadata] = %i[scaffold_url page prev next last]   # example
+Pagy::DEFAULT[:metadata] = %i[count page items pages prev next]
 
 # Searchkick extra: Paginate `Searchkick::Results` objects
 # See https://ddnexus.github.io/pagy/docs/extras/searchkick
@@ -116,7 +122,7 @@
 
 # Bootstrap extra: Add nav, nav_js and combo_nav_js helpers and templates for Bootstrap pagination
 # See https://ddnexus.github.io/pagy/docs/extras/bootstrap
-# require 'pagy/extras/bootstrap'
+require 'pagy/extras/bootstrap'
 
 # Bulma extra: Add nav, nav_js and combo_nav_js helpers and templates for Bulma pagination
 # See https://ddnexus.github.io/pagy/docs/extras/bulma
@@ -143,7 +149,7 @@
 
 # Limit extra: Allow the client to request a custom limit per page with an optional selector UI
 # See https://ddnexus.github.io/pagy/docs/extras/limit
-# require 'pagy/extras/limit'
+require 'pagy/extras/limit'
 # set to false only if you want to make :limit_extra an opt-in variable
 # Pagy::DEFAULT[:limit_extra] = false    # default true
 # Pagy::DEFAULT[:limit_param] = :limit   # default
@@ -151,8 +157,9 @@
 
 # Overflow extra: Allow for easy handling of overflowing pages
 # See https://ddnexus.github.io/pagy/docs/extras/overflow
-# require 'pagy/extras/overflow'
+require 'pagy/extras/overflow'
 # Pagy::DEFAULT[:overflow] = :empty_page    # default  (other options: :last_page and :exception)
+Pagy::DEFAULT[:overflow] = :last_page
 
 # Trim extra: Remove the page=1 param from links
 # See https://ddnexus.github.io/pagy/docs/extras/trim
@@ -190,6 +197,7 @@
 # Examples:
 # load the "de" built-in locale:
 # Pagy::I18n.load(locale: 'de')
+Pagy::I18n.load(locale: 'ru', filepath: 'config/locales/pagy.ru.yml')
 #
 # load the "de" locale defined in the custom file at :filepath:
 # Pagy::I18n.load(locale: 'de', filepath: 'path/to/pagy-de.yml')

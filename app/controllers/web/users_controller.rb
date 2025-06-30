@@ -5,8 +5,10 @@ class Web::UsersController < Web::ApplicationController
   def index
     authorize User
 
-    @users = policy_scope(User).order(:created_at)
-    @users_cnt = @users.count
+    @q = policy_scope(User).order(:created_at)
+    @users_cnt = @q.count
+
+    @pagy, @users = pagy(@q)
 
     @main_title = 'Пользователи'
     set_user_breadcrumbs
