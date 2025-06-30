@@ -1,0 +1,30 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+/*
+/* НЕ НУЖНО писать @import - Propshaft сам всё объединит! (кроме .scss)
+ * Все .css файлы из app/assets/stylesheets/ автоматически объединяются в один application.css.
+ * Propshaft загружает файлы в алфавитном порядке, например:
+ *   1. application.css     (сначала)
+ *   2. common/custom.css   (затем файлы из подпапок)
+ *   3. test.css            (в алфавитном порядке)
+ * Если нужен контроль порядка используем нативный CSS синтаксис:
+ *   @import url("common/custom.css");
+ *   @import url("components/buttons.css");
+ * Но в таком случае браузер делает дополнительный HTTP запрос за каждым файлом из @import url()
+ * Другой способ = переименовать файлы:
+ *   01-bootstrap.css
+ *   02-custom.css
+ *   99-application.css
+ * Для импорта .scss файлов необходим гем dartsass-rails.
+ * При установленном геме .scss подключаем файлы используя Sass/SCSS синтаксис:
+ *   @import "common/custom";
+*/

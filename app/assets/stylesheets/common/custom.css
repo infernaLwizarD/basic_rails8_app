@@ -1,0 +1,71 @@
+.mw-100px {
+  max-width: 100px;
+}
+.mw-200 {
+  max-width: 200px;
+}
+.mw-300 {
+  max-width: 300px;
+}
+.mw-400 {
+  max-width: 400px;
+}
+.mw-500 {
+  max-width: 500px;
+}
+.mw-600 {
+  max-width: 600px;
+}
+.mw-700 {
+  max-width: 700px;
+}
+.mw-800 {
+  max-width: 800px;
+}
+.mw-900 {
+  max-width: 900px;
+}
+.mw-1000 {
+  max-width: 1000px;
+}
+
+.mh-700 {
+  max-height: 700px;
+}
+
+.w-100px {
+  width: 100px;
+}
+.w-200 {
+  width: 200px;
+}
+.w-300 {
+  width: 300px;
+}
+.w-400 {
+  width: 400px;
+}
+.w-500 {
+  width: 500px;
+}
+.w-600 {
+  width: 600px;
+}
+.w-700 {
+  width: 700px;
+}
+.w-800 {
+  width: 800px;
+}
+.w-900 {
+  width: 900px;
+}
+.w-1000 {
+  width: 1000px;
+}
+.resize-h {
+  resize: horizontal;
+}
+.resize-b {
+  resize: both;
+}
