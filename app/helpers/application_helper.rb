@@ -4,7 +4,8 @@ module ApplicationHelper
   def ts_link_to(name, path, options = {})
     options[:data] ||= {}
     options[:data][:turbo_stream] = true
-    link_to(name, path, options)
+    safe_name = name.respond_to?(:html_safe) ? name.html_safe : name
+    link_to(safe_name, path, options)
   end
 
   def field_class(object, field)
