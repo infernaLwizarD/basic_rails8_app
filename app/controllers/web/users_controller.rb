@@ -5,7 +5,7 @@ class Web::UsersController < Web::ApplicationController
   def index
     authorize User
 
-    @q = policy_scope(User).ransack(params[:q])
+    @q = policy_scope(User).default_order.ransack(params[:q])
     @users_cnt = @q.result.count
 
     @pagy, @users = pagy(@q.result)

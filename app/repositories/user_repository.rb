@@ -2,6 +2,7 @@ module UserRepository
   extend ActiveSupport::Concern
 
   included do
+    scope :default_order, -> { order(:created_at) }
     scope :by_state, lambda { |v|
       case v
       when 'active'

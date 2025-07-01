@@ -18,10 +18,10 @@
         <table id="users-table" class="table table-striped table-bordered">
           <thead>
           <tr>
-            <th style="width:10px;">ID</th>
-            <th>Имя пользователя</th>
-            <th>E-mail</th>
-            <th>Роль</th>
+            <th style="width:10px;"><%= turbo_sort_link(@q, :id, 'ID') %></th>
+            <th><%= turbo_sort_link(@q, :username, 'Имя пользователя') %></th>
+            <th><%= turbo_sort_link(@q, :email, 'E-mail') %></th>
+            <th><%= turbo_sort_link(@q, :role, 'Роль') %></th>
           </tr>
           </thead>
           <tbody>
