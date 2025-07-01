@@ -7,6 +7,7 @@
           <% if policy(User).create? %>
             <%= draw_new_button(path: new_user_path(), button: true) %>
           <% end %>
+          <%= render 'web/users/partials/search_form', q: @q %>
           <div class="ms-auto">
             <%== pagy_bootstrap_nav_custom(@pagy) %>
           </div>

@@ -1,6 +1,8 @@
 class User < ApplicationRecord
-  include UserRoleEnum
   include Discard::Model
+  include UserRepository
+  include UserRansack
+  include UserRoleEnum
 
   # Include default devise modules. Others available are:
   # :timeoutable
@@ -12,17 +14,6 @@ class User < ApplicationRecord
   validate :validate_username
 
   attr_writer :login
-
-  scope :by_state, lambda { |v|
-    case v
-    when 'active'
-      where(discarded_at: nil, locked_at: nil)
-    when 'locked'
-      where(discarded_at: nil).where.not(locked_at: nil)
-    when 'discarded'
-      where.not(discarded_at: nil)
-    end
-  }
 
   before_save do
     username.downcase!

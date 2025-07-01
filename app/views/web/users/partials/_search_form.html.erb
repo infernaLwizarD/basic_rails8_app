@@ -1,0 +1,16 @@
+<%= search_form_for q, data: { turbo_stream: true }, class: 'd-flex align-items-center gap-2' do |f| %>
+  <%= f.search_field(:search_cont,
+                     value: params.dig(:q, :search_cont),
+                     placeholder: 'Поиск',
+                     class: 'form-control form-control-sm') %>
+  <% if current_user.admin_role? %>
+    <%= f.select(:by_state,
+                 [['Активные', 'active'], ['Заблокированные', 'locked'], ['Удалённые', 'discarded']],
+                 { include_blank: '[Все]', selected: params.dig(:q, :by_state) },
+                 { class: 'form-control form-control-sm', onchange: 'this.form.requestSubmit();' }) %>
+    <%= f.select(:role_eq,
+                 User.user_role_collection,
+                 { include_blank: '[Все роли]' },
+                 { class: 'form-control form-control-sm', onchange: 'this.form.requestSubmit();' }) %>
+  <% end %>
+<% end %>

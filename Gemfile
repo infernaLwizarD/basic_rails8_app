@@ -21,6 +21,7 @@ gem 'devise'
 gem 'discard', '~> 1.4'
 gem 'pagy', '~> 9.3' # omit patch digit
 gem 'pundit'
+gem 'ransack'
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
