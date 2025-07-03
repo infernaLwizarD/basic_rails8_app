@@ -1,3 +1,57 @@
+.card a {
+  text-decoration: none !important;
+}
+
+/* Минимальная ширина для поля поиска */
+.card-header input[type="search"],
+.card-header input[type="text"] {
+  min-width: 80px;
+}
+
+/* Минимальная ширина для select элементов */
+.card-header select {
+  min-width: 60px;
+}
+
+/* Предотвращение переноса текста в кнопках и заголовках таблиц */
+.btn, .table th {
+  white-space: nowrap;
+}
+
+.w-60 {
+  width: 60px;
+}
+.w-100px {
+  width: 100px;
+}
+.w-200 {
+  width: 200px;
+}
+.w-300 {
+  width: 300px;
+}
+.w-400 {
+  width: 400px;
+}
+.w-500 {
+  width: 500px;
+}
+.w-600 {
+  width: 600px;
+}
+.w-700 {
+  width: 700px;
+}
+.w-800 {
+  width: 800px;
+}
+.w-900 {
+  width: 900px;
+}
+.w-1000 {
+  width: 1000px;
+}
+
 .mw-100px {
   max-width: 100px;
 }
@@ -29,40 +83,6 @@
   max-width: 1000px;
 }
 
-.mh-700 {
-  max-height: 700px;
-}
-
-.w-100px {
-  width: 100px;
-}
-.w-200 {
-  width: 200px;
-}
-.w-300 {
-  width: 300px;
-}
-.w-400 {
-  width: 400px;
-}
-.w-500 {
-  width: 500px;
-}
-.w-600 {
-  width: 600px;
-}
-.w-700 {
-  width: 700px;
-}
-.w-800 {
-  width: 800px;
-}
-.w-900 {
-  width: 900px;
-}
-.w-1000 {
-  width: 1000px;
-}
 .resize-h {
   resize: horizontal;
 }
