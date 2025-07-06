@@ -41,3 +41,15 @@ docker compose exec web rubocop -a
 ```bash
 docker compose exec web bash -c "RAILS_ENV=test rspec spec/features"
  ```
+
+---
+Перед деплоем при помощи kamal:
+
+* Загрузить переменные из .env.kamal
+```bash
+export $(cat .env.kamal | xargs)
+```
+* Или добавить в ~/.bashrc автозагрузку
+```bash
+echo 'if [ -f .env.kamal ]; then export $(cat .env.kamal | xargs); fi' >> ~/.bashrc
+```
