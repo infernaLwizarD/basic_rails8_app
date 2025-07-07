@@ -74,6 +74,9 @@ aliases:
 # Recommended to change this to a mounted volume path that is backed up off server.
 volumes:
   - "basic_rails8_app_storage:/rails/storage"
+  - "basic_rails8_app_solid_queue:/var/lib/solid_queue"
+  - "basic_rails8_app_solid_cache:/var/lib/solid_cache"
+  - "basic_rails8_app_solid_cable:/var/lib/solid_cable"
 
 
 # Bridge fingerprinted assets, like JS and CSS, between versions to avoid
@@ -106,6 +109,7 @@ accessories:
     image: postgres:13.9-alpine
     host: <%= ENV['SERVER_IP'] %>
     port: "127.0.0.1:5432:5432"
+#    role: web
     env:
       clear:
         POSTGRES_USER: postgres
@@ -114,8 +118,8 @@ accessories:
         - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data
-    files:
-      - config/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
+#    files:
+#      - config/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
 #   db:
 #     image: mysql:8.0
 #     host: 192.168.0.2
@@ -137,3 +141,16 @@ accessories:
 #     port: 6379
 #     directories:
 #       - data:/data
+
+# Healthcheck configuration
+# healthcheck:
+#   path: /up
+#   port: 3000
+#   interval: 10s
+#   max_attempts: 10
+
+# Deploy timeout - увеличиваем время ожидания для миграций
+deploy_timeout: 120
+
+# Readiness delay - время ожидания после запуска контейнера
+readiness_delay: 15

@@ -8,7 +8,9 @@ fi
 
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
+    echo "🚀 Preparing all databases for Rails 8 application..."
+    ./bin/rails db:prepare
+    echo "✅ All databases prepared!"
 fi
 
 exec "${@}"
