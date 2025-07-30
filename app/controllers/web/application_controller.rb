@@ -16,11 +16,14 @@ class Web::ApplicationController < ApplicationController
   def render_turbo_response(template, options = {})
     options[:breadcrumbs] ||= false
     options[:flash] ||= false
+    options[:with_html] ||= false
+
     stream = [turbo_stream.update('content', template: template)]
     stream.push(render_turbo_breadcrumbs) if options[:breadcrumbs]
     stream.push(render_turbo_flash) if options[:flash]
 
     respond_to do |format|
+      format.html { render template: template } if options[:with_html]
       format.turbo_stream do
         render turbo_stream: stream
       end

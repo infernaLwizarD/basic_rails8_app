@@ -16,6 +16,11 @@ Rails.application.routes.draw do
     #--- users ---#
     authenticated :user do
       root to: 'home#index', as: :authenticated_root
+
+      # Hotwire demo routes
+      post 'change_frame1_color', to: 'home#change_frame1_color'
+      post 'change_frame2_color', to: 'home#change_frame2_color'
+      post 'reset_colors', to: 'home#reset_colors'
     end
     root to: redirect('/users/sign_in')
 

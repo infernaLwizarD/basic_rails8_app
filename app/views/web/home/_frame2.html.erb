@@ -1,0 +1,6 @@
+<div style="<%= background_color ? "background-color: #{background_color};" : "" %> padding: 10px; border: 1px solid #28a745; border-radius: 3px; transition: background-color 0.3s ease;">
+  <h5>Фрейм 2 - Вложенный контейнер</h5>
+  <p>Это фрейм 2, который находится внутри фрейма 1. Его цвет фона также можно изменять независимо.</p>
+  <p><strong>Время обновления:</strong> <%= Time.current.strftime("%H:%M:%S") %></p>
+  <p><small class="text-muted">Фрейм 2 обновляется независимо от фрейма 1 благодаря Turbo Frames</small></p>
+</div>

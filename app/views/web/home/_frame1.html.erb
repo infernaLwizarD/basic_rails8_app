@@ -1,0 +1,25 @@
+<div style="<%= background_color ? "background-color: #{background_color};" : "" %> padding: 15px; border: 2px solid #007bff; border-radius: 5px; transition: background-color 0.3s ease;">
+  <h4>Фрейм 1 - Основной контейнер</h4>
+  <p>Это базовый фрейм 1 с текстовым блоком. Цвет фона можно изменять с помощью кнопки ниже.</p>
+  <p><strong>Время обновления:</strong> <%= Time.current.strftime("%H:%M:%S") %></p>
+
+  <div class="mt-3">
+    <%= turbo_frame_tag 'frame2' do %>
+      <%= render 'web/home/frame2', background_color: nil %>
+    <% end %>
+  </div>
+
+  <div class="mt-3 d-flex gap-2">
+    <%= button_to "Изменить Ф1", change_frame1_color_path,
+        method: :post,
+        class: "btn btn-primary me-2",
+        data: { turbo_method: :post },
+        form: { data: { turbo: true } } %>
+        
+    <%= button_to "Изменить Ф2", change_frame2_color_path,
+        method: :post,
+        class: "btn btn-success",
+        data: { turbo_method: :post },
+        form: { data: { turbo: true } } %>
+  </div>
+</div>

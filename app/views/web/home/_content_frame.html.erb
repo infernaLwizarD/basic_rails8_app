@@ -1,9 +1,0 @@
-<h6 class="top-card-title">Добро пожаловать!</h6>
-<p>Время последнего обновления фрейма: <%= @current_time || Time.now.strftime("%H:%M:%S") %></p>
-
-<div style="background-color: #f0f0f0; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd;">
-  <h3>Тестовый фрейм _content_frame</h3>
-  <p>Время последнего обновления: <%= @current_time || Time.now.strftime("%H:%M:%S") %></p>
-  <p>Это контент из партиала _content_frame.html.erb</p>
-</div>
-<%= link_to "Обновить все фреймы", root_path, class: "btn btn-primary", data: { turbo_method: :get, turbo_stream: true } %>

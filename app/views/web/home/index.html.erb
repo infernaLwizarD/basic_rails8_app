@@ -1,13 +1,25 @@
-
-
-<%#= turbo_frame_tag 'test_frame' do %>
-  <%#= render 'web/home/test_frame' %>
-<%# end %>
-
-<%#= turbo_frame_tag 'content_frame' do %>
-  <%= render 'web/home/content_frame' %>
-<%# end %>
-
-<!--<div style="margin-top: 20px;">-->
-  <%#= link_to "Обновить все фреймы (вне фреймов)", root_path, class: "btn btn-secondary", data: { turbo_method: :get, turbo_stream: true } %>
-<!--</div>-->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <p class="text-muted">Время последнего обновления страницы: <%= @current_time %></p>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-12">
+      <%= turbo_frame_tag 'frame1' do %>
+        <%= render 'web/home/frame1', background_color: nil %>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="row mt-3">
+    <div class="col-12 text-center">
+      <%= button_to "Сбросить цвета", reset_colors_path, 
+          method: :post,
+          class: "btn btn-warning btn-lg",
+          data: { turbo_method: :post },
+          form: { data: { turbo: true } } %>
+    </div>
+  </div>
+</div>
