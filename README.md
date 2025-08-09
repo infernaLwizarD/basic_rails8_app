@@ -12,10 +12,11 @@ Bootstrap 5, AdminLTE 4 и Font Awesome 6 интегрированы вручн�
 git clone git@github.com:infernaLwizarD/basic_rails8_app.git
 ```
 
-- Переходим в директорию приложения и создаём файл с переменными окружения:
+- Переходим в директорию приложения и создаём файлы с переменными окружения:
 ```bash
 cd basic_rails8_app
 cp .env.sample .env
+cp .env.kamal.sample .env.kamal
 ```
 
 - Собираем образы Docker:
@@ -55,7 +56,7 @@ docker compose exec web bash -c "RAILS_ENV=test rspec spec/features"
 docker build -f Dockerfile.kamal -t basic-rails-8-kamal .
 ```
 Перед деплоем при помощи kamal необходимо запустить установочный скрипт install-kamal-function.sh, который автоматически добавит wrapper функцию kamal в ~/.bashrc.
-#### Справка по использованию install-kamal-function.sh
+### Справка по использованию install-kamal-function.sh
 
 **Установка функции:**
 
@@ -75,6 +76,39 @@ docker build -f Dockerfile.kamal -t basic-rails-8-kamal .
 ./install-kamal-function.sh --help
 ```
 
+### Подготовка VPS сервера
+
+Подключитесь к серверу и выполните:
+```bash
+# Обновление системы
+sudo apt update && sudo apt upgrade -y
+
+# Установка Docker
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# Добавление пользователя в группу docker
+sudo usermod -aG docker $USER
+
+# Перезапуск сессии
+exit
+# Подключитесь заново по SSH
+
+# Проверка Docker
+docker --version
+docker run hello-world
+```
+**Настройте SSH ключи:**
+```bash
+# Создайте SSH ключ если его нет
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
+# Скопируйте публичный ключ на сервер
+ssh-copy-id user@YOUR_SERVER_IP
+
+# Проверьте подключение
+ssh user@YOUR_SERVER_IP
+```
 ---
 <details>
   <summary style="font-size: large; font-weight: bold;">Справка по основным командам Kamal</summary>
@@ -158,8 +192,10 @@ kamal prune containers # Удалить остановленные контей�
 kamal traefik logs    # Логи Traefik (если используется)
 kamal traefik reload  # Перезагрузить конфигурацию Traefik
 
-kamal ps              # Показать запущенные контейнеры
-kamal ps -a           # Показать все контейнеры (включая остановленные)
+kamal server exec "docker ps" # Показать запущенные контейнеры
+kamal server exec "docker ps -a" # Показать все контейнеры (включая остановленные)
+kamal server exec "docker images" # Показать список образов на сервере
+kamal server exec "docker volume ls" # Показать список volumes на сервере
 ```
 
 #### SSL/TLS сертификаты
