@@ -1,3 +1,5 @@
+# Это workflow деплоя через GitHub Container Registry
+# Для использования переименуйте файл deploy.ghcr.yml.disabled в deploy.yml
 name: Deploy
 
 on:
@@ -58,18 +60,18 @@ jobs:
       - name: Verify deployment environment
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
-          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+          KAMAL_REGISTRY_USER: ${{ secrets.KAMAL_REGISTRY_USER }}
         run: |
           echo "Deploying to: $SERVER_IP"
-          echo "Docker user: $DOCKERHUB_USER"
+          echo "Github user: $KAMAL_REGISTRY_USER"
           echo "Ruby version: $(ruby --version)"
           echo "Rails version: $(bin/rails --version)"
 
       - name: Pre-deployment checks
         env:
-          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+          KAMAL_REGISTRY_USER: ${{ secrets.KAMAL_REGISTRY_USER }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
-          KAMAL_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
         run: |
           echo "🔍 Checking deployment configuration..."
           
@@ -81,9 +83,9 @@ jobs:
           echo "Validating Kamal configuration..."
           bin/kamal config
           
-          # Проверить Docker registry
-          echo "Testing Docker registry login..."
-          docker login -u $DOCKERHUB_USER -p $KAMAL_REGISTRY_PASSWORD
+          # Проверить GitHub Container Registry login
+          echo "Testing GitHub Container Registry login..."
+          echo $KAMAL_REGISTRY_PASSWORD | docker login ghcr.io -u $KAMAL_REGISTRY_USER --password-stdin
           
           echo "✅ All pre-deployment checks passed!"
 
@@ -105,15 +107,24 @@ jobs:
       
       - name: Deploy with Kamal
         env:
-          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
-          KAMAL_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+          KAMAL_REGISTRY_USER: ${{ secrets.KAMAL_REGISTRY_USER }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
           # DATABASE_URL: postgres://user:pass@host:5432/dbname
         run: |
           echo "🚀 Starting deployment..."
-          bin/kamal deploy
+          
+          # Проверяем, существует ли контейнер базы данных
+          if ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no root@$SERVER_IP "docker ps -a --filter name=basic_rails8_app-db --format '{{.Names}}'" | grep -q "basic_rails8_app-db"; then
+            echo "📦 Database container exists, running deploy..."
+            bin/kamal deploy
+          else
+            echo "📦 Database container not found, running full setup..."
+            bin/kamal setup
+          fi
+          
           echo "✅ Deployment completed successfully!"
 
       # ========================================
@@ -144,8 +155,8 @@ jobs:
       - name: Rollback on failure
         if: failure()
         env:
-          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
-          KAMAL_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+          KAMAL_REGISTRY_USER: ${{ secrets.KAMAL_REGISTRY_USER }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}

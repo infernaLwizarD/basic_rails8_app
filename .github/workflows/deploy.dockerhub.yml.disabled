@@ -1,0 +1,165 @@
+# Это workflow деплоя через dockerhub
+# Для использования переименуйте файл deploy.dockerhub.yml.disabled в deploy.yml
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Загружает полную историю git (по умолчанию только последний коммит)
+          fetch-depth: 0
+          # Можно указать конкретную ветку (по умолчанию текущая)
+          # ref: master
+          # Токен для доступа к приватным репозиториям
+          # token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          # Читает версию из файла .ruby-version
+          ruby-version: .ruby-version
+          # Автоматически устанавливает и кеширует gems из Gemfile
+          bundler-cache: true
+          # Дополнительные опции:
+          # working-directory: backend/  # если Rails в подпапке
+          # cache-version: 1             # для сброса кеша
+
+      # ========================================
+      # Настраиваем SSH ключ
+      # ========================================
+      - name: Set up SSH key for deployment
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          # Приватный SSH ключ из секретов GitHub
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+        # Дополнительные опции:
+        # env:
+        #   SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+      # ========================================
+      # Тестируем SSH соединение
+      # ========================================
+      - name: Test SSH connection
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no root@$SERVER_IP "echo 'SSH connection successful'"
+
+      - name: Verify deployment environment
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          KAMAL_REGISTRY_USER: ${{ secrets.KAMAL_REGISTRY_USER }}
+        run: |
+          echo "Deploying to: $SERVER_IP"
+          echo "Docker user: $KAMAL_REGISTRY_USER"
+          echo "Ruby version: $(ruby --version)"
+          echo "Rails version: $(bin/rails --version)"
+
+      - name: Pre-deployment checks
+        env:
+          KAMAL_REGISTRY_USER: ${{ secrets.KAMAL_REGISTRY_USER }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+        run: |
+          echo "🔍 Checking deployment configuration..."
+          
+          # Проверить файлы
+          test -f config/deploy.yml && echo "✅ config/deploy.yml exists"
+          test -f Dockerfile.production && echo "✅ Dockerfile.production exists"
+          
+          # Проверить конфигурацию Kamal
+          echo "Validating Kamal configuration..."
+          bin/kamal config
+          
+          # Проверить Docker registry
+          echo "Testing Docker registry login..."
+          docker login -u $KAMAL_REGISTRY_USER -p $KAMAL_REGISTRY_PASSWORD
+          
+          echo "✅ All pre-deployment checks passed!"
+
+      - name: Install Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          # Версия buildx (по умолчанию latest)
+          version: latest
+          # Установить как default builder
+          install: true
+          # Дополнительные драйверы для сборки
+          driver-opts: |
+            network=host
+            image=moby/buildkit:master
+
+      # ========================================
+      # ОСНОВНОЙ ДЕПЛОЙ
+      # ========================================
+      
+      - name: Deploy with Kamal
+        env:
+          KAMAL_REGISTRY_USER: ${{ secrets.KAMAL_REGISTRY_USER }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          # DATABASE_URL: postgres://user:pass@host:5432/dbname
+        run: |
+          echo "🚀 Starting deployment..."
+          
+          # Проверяем, существует ли контейнер базы данных
+          if ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no root@$SERVER_IP "docker ps -a --filter name=basic_rails8_app-db --format '{{.Names}}'" | grep -q "basic_rails8_app-db"; then
+            echo "📦 Database container exists, running deploy..."
+            bin/kamal deploy
+          else
+            echo "📦 Database container not found, running full setup..."
+            bin/kamal setup
+          fi
+          
+          echo "✅ Deployment completed successfully!"
+
+      # ========================================
+      # ПОСТ-ДЕПЛОЙ ПРОВЕРКИ
+      # ========================================
+      
+      - name: Health check
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          echo "⏳ Waiting for application to start..."
+          sleep 30
+          
+          echo "🏥 Performing health check..."
+          curl -f http://$SERVER_IP/up || exit 1
+          
+          echo "🐳 Checking Docker containers..."
+          ssh root@$SERVER_IP "docker ps | grep basic_rails8_app"
+          
+          echo "✅ Health check passed!"
+
+      - name: Notify success
+        if: success()
+        run: |
+          echo "🎉 Deployment successful!"
+          # Здесь можно добавить уведомления в Slack/Discord
+
+      - name: Rollback on failure
+        if: failure()
+        env:
+          KAMAL_REGISTRY_USER: ${{ secrets.KAMAL_REGISTRY_USER }}
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          echo "❌ Deployment failed, rolling back..."
+          bin/kamal rollback 

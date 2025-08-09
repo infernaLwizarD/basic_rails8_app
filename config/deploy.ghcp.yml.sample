@@ -1,8 +1,9 @@
+# Это конфигурация деплоя через GitHub Container Registry. Для использования переименуйте в deploy.yml
 # Name of your application. Used to uniquely configure containers.
 service: basic_rails8_app
 
 # Name of the container image.
-image: <%= ENV['KAMAL_REGISTRY_USER'] %>/basic_rails8_app
+image: <%= ENV['KAMAL_REGISTRY_USER'].downcase %>/basic_rails8_app
 
 # Deploy to these servers.
 servers:
@@ -23,13 +24,10 @@ servers:
 
 # Credentials for your image host.
 registry:
-  # Specify the registry server, if you're not using Docker Hub
-  # server: registry.digitalocean.com / ghcr.io / ...
-  username: <%= ENV['KAMAL_REGISTRY_USER'] %>
-
-  # Always use an access token rather than real password when possible.
+  server: ghcr.io
+  username: <%= ENV['KAMAL_REGISTRY_USER'].downcase %>
   password:
-    - KAMAL_REGISTRY_PASSWORD
+    - KAMAL_REGISTRY_PASSWORD  # GitHub Personal Access Token
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
