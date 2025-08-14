@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   scope module: :web do
-    #--- users ---#
     authenticated :user do
       root to: 'home#index', as: :authenticated_root
 
@@ -22,8 +21,8 @@ Rails.application.routes.draw do
       post 'change_frame2_color', to: 'home#change_frame2_color'
       post 'reset_colors', to: 'home#reset_colors'
     end
-    root to: redirect('/users/sign_in')
 
+    #--- USERS ---#
     devise_for :users, controllers: {
       sessions: 'web/users/sessions',
       registrations: 'web/users/registrations',
@@ -31,6 +30,12 @@ Rails.application.routes.draw do
       confirmations: 'web/users/confirmations',
       unlocks: 'web/users/unlocks'
     }
+
+    devise_scope :user do
+      unauthenticated do
+        root to: 'users/sessions#new'
+      end
+    end
 
     scope '/admin' do
       resources :users, except: %i[show edit update destroy]
