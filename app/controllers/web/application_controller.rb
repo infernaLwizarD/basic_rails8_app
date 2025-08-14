@@ -16,7 +16,7 @@ class Web::ApplicationController < ApplicationController
   def render_turbo_response(template, options = {})
     options[:breadcrumbs] ||= false
     options[:flash] ||= false
-    options[:with_html] ||= false
+    options[:with_html] ||= true
 
     stream = [turbo_stream.update('content', template: template)]
     stream.push(render_turbo_breadcrumbs) if options[:breadcrumbs]
