@@ -1,59 +1,46 @@
 <div class="register-box">
 
   <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Регистрация</h3>
-    </div>
-
-    <div class="card-body">
+    <div class="card-body register-card-body">
+      <p class="register-box-msg">Регистрация</p>
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
         <%= render "web/users/shared/error_messages", resource: resource %>
 
         <div class="input-group mb-3">
-          <%= f.text_field :username, autofocus: true, autocomplete: "login", class: "form-control form-control-sm",
-                           placeholder: "Имя пользователя", required: true %>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
+          <%= f.text_field :username, autofocus: true, autocomplete: 'login', class: 'form-control form-control-sm',
+                           placeholder: 'Имя пользователя', required: true %>
+          <div class="input-group-text">
+            <span class="fas fa-user"></span>
           </div>
         </div>
 
         <div class="input-group mb-3">
-          <%= f.text_field :email, autofocus: true, autocomplete: "email", class: "form-control form-control-sm",
-                           placeholder: "Email", required: true %>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-at"></span>
-            </div>
+          <%= f.text_field :email, autofocus: true, autocomplete: 'email', class: 'form-control form-control-sm',
+                           placeholder: 'Email', required: true %>
+          <div class="input-group-text">
+            <span class="fas fa-at"></span>
           </div>
         </div>
 
         <div class="input-group mb-3">
-          <%= f.password_field :password, autocomplete: "off", class: "form-control form-control-sm",
-                               placeholder: "Пароль", required: true %>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
+          <%= f.password_field :password, autocomplete: 'off', class: 'form-control form-control-sm',
+                               placeholder: 'Пароль', required: true %>
+          <div class="input-group-text">
+            <span class="fas fa-lock"></span>
           </div>
         </div>
 
         <div class="input-group mb-3">
-          <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control form-control-sm",
-                               placeholder: "Повторите пароль", required: true %>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
+          <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control form-control-sm',
+                               placeholder: 'Повторите пароль', required: true %>
+          <div class="input-group-text">
+            <span class="fas fa-lock"></span>
           </div>
         </div>
 
         <div class="row">
-          <div class="col">
-            <div class="actions mb-2">
-              <%= f.submit "Зарегистрироваться", class: 'btn btn-primary btn-block' %>
-            </div>
+          <div class="col-12 text-end">
+            <%= f.submit 'Зарегистрироваться', class: 'btn btn-primary fs-7' %>
           </div>
         </div>
       <% end %>

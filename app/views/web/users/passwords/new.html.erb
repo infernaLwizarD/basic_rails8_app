@@ -1,29 +1,22 @@
 <div class="login-box">
 
   <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Восстановление пароля</h3>
-    </div>
-
-    <div class="card-body">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Восстановление пароля</p>
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
         <%= render "web/users/shared/error_messages", resource: resource %>
 
         <div class="input-group mb-3">
-          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control form-control-sm",
-                            placeholder: "Email", required: true %>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-at"></span>
-            </div>
+          <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control form-control-sm',
+                            placeholder: 'Email', required: true %>
+          <div class="input-group-text">
+            <span class="fas fa-at"></span>
           </div>
         </div>
 
         <div class="row">
-          <div class="col">
-            <div class="actions mb-2">
-              <%= f.submit "Отправить запрос", class: 'btn btn-primary btn-block' %>
-            </div>
+          <div class="col-12 text-end">
+            <%= f.submit 'Отправить запрос', class: 'btn btn-primary fs-7' %>
           </div>
         </div>
       <% end %>
