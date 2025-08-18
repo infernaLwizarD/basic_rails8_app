@@ -1,10 +1,6 @@
 class Web::ApplicationController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  # def render_main_turbo_stream(**)
-  #   render('layouts/lte/turbo_streams/main', **)
-  # end
-
   def render_turbo_flash
     turbo_stream.update('flash', partial: 'layouts/lte/partials/flash')
   end
@@ -33,7 +29,7 @@ class Web::ApplicationController < ApplicationController
   private
 
   def user_not_authorized
-    flash.now[:alert] = 'Для выполнения данного действия необходимо авторизоваться.'
+    flash[:alert] = 'Доступ запрещён. У вас недостаточно прав для выполнения данного действия.'
     redirect_to(root_path)
   end
 end
