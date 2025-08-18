@@ -19,7 +19,7 @@ gem 'jbuilder'
 
 gem 'devise'
 gem 'discard', '~> 1.4'
-gem 'pagy', '~> 9.3' # omit patch digit
+gem 'pagy', '~> 9.4' # omit patch digit
 gem 'pundit'
 gem 'ransack'
 
