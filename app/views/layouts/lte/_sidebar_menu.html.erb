@@ -1,17 +1,18 @@
-<div class="sidebar-wrapper">
+<div class="sidebar-wrapper" data-controller="navigation">
   <nav class="mt-2">
     <!--begin::Sidebar Menu-->
     <ul
-      class="nav sidebar-menu flex-column"
+      class="nav sidebar-menu flex-column small"
       data-lte-toggle="treeview"
       role="menu"
       data-accordion="false"
+      data-navigation-target="menu"
     >
       <!--<li class="nav-header">Nav Header</li>-->
       <li class="nav-item">
         <%= ts_link_to(icon('nav-icon fas', 'users', content_tag('p', 'Пользователи')),
-                    users_path,
-                    class: 'nav-link align-items-center gap-1') %>
+                       users_path,
+                       class: 'nav-link align-items-center gap-1') %>
       </li>
     </ul>
     <!--end::Sidebar Menu-->
