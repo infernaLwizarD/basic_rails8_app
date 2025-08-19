@@ -14,8 +14,8 @@ RSpec.describe 'Восстановление пароля', type: :system do
       click_on 'Отправить запрос'
       expect(page).to have_content I18n.t('devise.passwords.send_instructions')
 
-      ptoken = last_email.body.match(/reset_password_token=[^"]*/)
-      visit "users/password/edit?#{ptoken}"
+      ptoken = last_email.body.match(/reset_password_token=([^"]*)/)[1]
+      visit edit_user_password_path(reset_password_token: ptoken)
 
       new_password = Faker::Internet.unique.password(min_length: 6)
       fill_in 'Новый пароль', with: new_password

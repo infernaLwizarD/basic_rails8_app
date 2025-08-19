@@ -19,8 +19,8 @@ RSpec.describe 'Модуль Lockable', type: :system do
         click_on 'Отправить'
         expect(page).to have_content I18n.t('devise.unlocks.send_instructions')
 
-        utoken = last_email.body.match(/unlock_token=[^"]*/)
-        visit "/users/unlock?#{utoken}"
+        utoken = last_email.body.match(/unlock_token=([^"]*)/)[1]
+        visit user_unlock_path(unlock_token: utoken)
         expect(page).to have_content I18n.t('devise.unlocks.unlocked')
       end
 

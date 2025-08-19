@@ -20,10 +20,18 @@ Rails.application.routes.draw do
       post 'change_frame1_color', to: 'home#change_frame1_color'
       post 'change_frame2_color', to: 'home#change_frame2_color'
       post 'reset_colors', to: 'home#reset_colors'
+
+      resources :users do
+        member do
+          post :lock
+          post :unlock
+          post :restore
+        end
+      end
     end
 
-    #--- USERS ---#
-    devise_for :users, controllers: {
+    #--- DEVISE AUTHENTICATION ---#
+    devise_for :users, path: 'auth', controllers: {
       sessions: 'web/users/sessions',
       registrations: 'web/users/registrations',
       passwords: 'web/users/passwords',
@@ -34,18 +42,6 @@ Rails.application.routes.draw do
     devise_scope :user do
       unauthenticated do
         root to: 'users/sessions#new'
-      end
-    end
-
-    scope '/admin' do
-      resources :users, except: %i[show edit update destroy]
-    end
-
-    resources :users, only: %i[show edit update destroy] do
-      member do
-        post :lock
-        post :unlock
-        post :restore
       end
     end
     #----#

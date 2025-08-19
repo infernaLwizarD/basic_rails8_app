@@ -34,8 +34,8 @@ RSpec.describe 'Регистрация', type: :system do
       click_on 'Зарегистрироваться'
       expect(page).to have_content I18n.t('devise.registrations.signed_up_but_unconfirmed')
 
-      ctoken = last_email.body.match(/confirmation_token=[^"]*/)
-      visit "/users/confirmation?#{ctoken}"
+      ctoken = last_email.body.match(/confirmation_token=([^"]*)/)[1]
+      visit user_confirmation_path(confirmation_token: ctoken)
 
       expect(page).to have_content I18n.t('devise.confirmations.confirmed')
     end
