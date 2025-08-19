@@ -4,6 +4,12 @@ class Web::Users::RegistrationsController < Devise::RegistrationsController
   layout 'logon'
 
   before_action :configure_sign_up_params, only: [:create]
+
+  # GET /resource/edit
+  # Переопределяем edit, чтобы он возвращал 404
+  def edit
+    render_not_found
+  end
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
@@ -36,15 +42,11 @@ class Web::Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  # GET /resource/edit
-  # def edit
-  #   super
-  # end
-
   # PUT /resource
-  # def update
-  #   super
-  # end
+  # Переопределяем update, чтобы он возвращал 404
+  def update
+    render_not_found
+  end
 
   # DELETE /resource
   # def destroy
