@@ -1,0 +1,120 @@
+<% controller_class = "Web::#{module_name.present? ? module_name + '::' : ''}#{resource_class_name.pluralize}Controller" %>
+<% model_class = class_name %>
+<% model_var = resource_name %>
+<% model_var_plural = resource_name.pluralize %>
+<% path_prefix = route_path %>
+class <%= controller_class %> < Web::ApplicationController
+  before_action :find_and_authorize_<%= model_var %>, except: %i[new create index]
+
+  def index
+    authorize <%= model_class %>
+
+    @q = policy_scope(<%= model_class %>).default_order.ransack(params[:q])
+    @<%= model_var_plural %>_cnt = @q.result.count
+
+    @pagy, @<%= model_var_plural %> = pagy(@q.result)
+
+    @main_title = '<%= resource_label_plural %>'
+    set_<%= model_var %>_breadcrumbs
+
+    render_turbo_response('web/<%= controller_path %>/index', breadcrumbs: true)
+  end
+
+  def show
+    set_<%= model_var %>_breadcrumbs({ title: @<%= model_var %>.label,
+                                    path: <%= path_prefix %>_path(@<%= model_var %>) })
+
+    render_turbo_response('web/<%= controller_path %>/show', breadcrumbs: true)
+  end
+
+  def new
+    authorize <%= model_class %>
+
+    @<%= model_var %> = <%= model_class %>.new
+
+    set_<%= model_var %>_breadcrumbs({ title: <%= new_resource_title.inspect %> })
+
+    render_turbo_response('web/<%= controller_path %>/new', breadcrumbs: true)
+  end
+
+  def edit
+    set_<%= model_var %>_breadcrumbs({ title: @<%= model_var %>.label,
+                                    path: <%= path_prefix %>_path(@<%= model_var %>) })
+
+    render_turbo_response('web/<%= controller_path %>/edit', flash: true)
+  end
+
+  def create
+    authorize <%= model_class %>
+
+    @<%= model_var %> = <%= model_class %>.new(<%= model_var %>_params)
+    @<%= model_var %>.creator = current_user
+
+    if @<%= model_var %>.save
+      flash.now[:notice] = <%= create_success_message.inspect %>
+      set_<%= model_var %>_breadcrumbs({ title: @<%= model_var %>.label,
+                                      path: <%= path_prefix %>_path(@<%= model_var %>) })
+      render_turbo_response('web/<%= controller_path %>/show', breadcrumbs: true, flash: true)
+    else
+      set_<%= model_var %>_breadcrumbs({ title: <%= new_resource_title.inspect %> })
+      render_turbo_response('web/<%= controller_path %>/new', breadcrumbs: true)
+    end
+  end
+
+  def update
+    if @<%= model_var %>.update(<%= model_var %>_params)
+      flash.now[:notice] = <%= update_success_message.inspect %> if @<%= model_var %>.saved_changes?
+
+      render_turbo_response('web/<%= controller_path %>/show', flash: true)
+    else
+      render_turbo_response('web/<%= controller_path %>/edit')
+    end
+  end
+
+  def destroy
+    @<%= model_var %>.discard
+    flash.now[:notice] = <%= destroy_message.inspect %>
+
+    render_turbo_response('web/<%= controller_path %>/show', flash: true)
+  end
+
+  def restore
+    @<%= model_var %>.undiscard!
+    flash.now[:notice] = <%= restore_message.inspect %>
+
+    render_turbo_response('web/<%= controller_path %>/show', flash: true)
+  end
+
+  def lock
+    @<%= model_var %>.lock_access!(send_instructions: false)
+    flash.now[:notice] = <%= lock_message.inspect %>
+
+    render_turbo_response('web/<%= controller_path %>/show', flash: true)
+  end
+
+  def unlock
+    @<%= model_var %>.unlock_access!
+    flash.now[:notice] = <%= unlock_message.inspect %>
+
+    render_turbo_response('web/<%= controller_path %>/show', flash: true)
+  end
+
+  private
+
+  def find_and_authorize_<%= model_var %>
+    @<%= model_var %> = <%= model_class %>.find(params[:id])
+    authorize @<%= model_var %>
+  end
+
+  def <%= model_var %>_params
+    attributes = %i[label]
+    params.expect(<%= model_path.gsub('/', '_') %>: attributes)
+  end
+
+  def set_<%= model_var %>_breadcrumbs(additional = nil)
+    @breadcrumbs = [
+      { title: '<%= resource_label_plural %>', path: <%= path_prefix %>_path }
+    ]
+    @breadcrumbs << additional if additional
+  end
+end

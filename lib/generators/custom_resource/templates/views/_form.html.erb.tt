@@ -1,0 +1,20 @@
+<% model_var = resource_name %>
+<%%= form_with(model: @<%= model_var %>, local: false) do |form| %>
+    <h6 class="top-card-title h5"><%= to_html_escape_numeric(resource_label_raw) %></h6>
+    <div class="card card-primary card-outline">
+      <div class="card-body form-card d-flex flex-column gap-3">
+        <div class="form-field">
+          <%%= form.label :label, 'Наименование', class: 'form-label fw-medium' %>
+          <%%= form.text_area :label, rows: 1, class: field_class(@<%= model_var %>, :label) + ' resize-h' %>
+          <%%= error_message_for(@<%= model_var %>, :label) %>
+        </div>
+      </div>
+  
+      <div class="card-footer d-flex gap-2 align-items-center">
+        <%%= draw_back_button(path: back_path) %>
+        <div class="ms-auto">
+          <%%= draw_save_button %>
+        </div>
+      </div>
+    </div>
+  <%% end %>

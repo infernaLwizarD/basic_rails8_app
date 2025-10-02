@@ -1,0 +1,31 @@
+class <%= class_name %>Policy < ApplicationPolicy
+  class Scope < Scope
+    def resolve
+      scope.all
+    end
+  end
+
+  def index?
+    user.admin_role?
+  end
+
+  def show?
+    user.admin_role?
+  end
+
+  def create?
+    user.admin_role?
+  end
+
+  def update?
+    record.kept? && user.admin_role?
+  end
+
+  def destroy?
+    record.kept? && user.admin_role?
+  end
+
+  def restore?
+    record.discarded? && user.admin_role?
+  end
+end

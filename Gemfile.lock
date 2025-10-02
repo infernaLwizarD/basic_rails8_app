@@ -184,6 +184,8 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
     minitest (5.25.5)
+    morph (0.6.0)
+      activesupport (>= 4.1.11)
     msgpack (1.8.0)
     net-imap (0.5.10)
       date
@@ -439,6 +441,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
+  morph
   pagy (~> 9.4)
   pg (~> 1.6)
   propshaft

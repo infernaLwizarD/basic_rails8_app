@@ -1,0 +1,20 @@
+Description:
+    Генератор для создания полного CRUD ресурса в приложении.
+    Генерирует миграцию, модель, репозиторий, Ransack модуль, политику,
+    контроллер, views, фабрику и тесты.
+
+Example:
+    rails generate custom_resource References::ItemCategory 'Категория непродовольственных товаров'
+
+    Создаст:
+        Миграция:     db/migrate/[timestamp]_create_references_item_categories.rb
+        Модель:       app/models/references/item_category.rb
+        Репозиторий:  app/repositories/references/item_category_repository.rb
+        Ransack:      app/models/concerns/references/item_category_ransack.rb
+        Политика:     app/policies/references/item_category_policy.rb
+        Контроллер:   app/controllers/web/references/item_categories_controller.rb
+        Views:        app/views/web/references/item_categories/
+        Фабрика:      spec/factories/references/item_categories.rb
+        Тесты:        spec/features/references/item_categories/
+
+    И выведет инструкции по добавлению роутов и пункта меню.

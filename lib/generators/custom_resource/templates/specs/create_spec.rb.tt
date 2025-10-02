@@ -1,0 +1,54 @@
+<% model_var = resource_name %>
+<% model_var_plural = resource_name.pluralize %>
+<% path_prefix = route_path %>
+require 'rails_helper'
+
+RSpec.describe 'Создание <%= to_ruby_unicode_literal(resource_label_genitive) %>', js: true, type: :system do
+  before do
+    logged_as(user)
+    visit root_path
+  end
+
+  context 'Администратор' do
+    let(:user) { create(:user, :admin) }
+
+    before do
+      open_menu_links('Справочники', '<%= to_html_escape_numeric(resource_label_plural) %>')
+    end
+
+    it 'создаёт <%= to_ruby_unicode_literal(resource_label_accusative) %>' do
+      click_on 'Добавить', match: :first
+
+      fill_in 'Наименование', with: 'Тестовое наименование'
+      click_on 'Сохранить'
+
+      expect(page).to have_content '<%= to_html_escape_numeric(resource_label_raw) %> успешно создан'
+      expect(page).to have_content 'Тестовое наименование'
+    end
+
+    it 'получает сообщение об ошибке не заполнив обязательных полей' do
+      click_on 'Добавить', match: :first
+
+      fill_in 'Наименование', with: ''
+      click_on 'Сохранить'
+
+      expect(page).to have_content 'не может быть пустым'
+    end
+  end
+
+  context 'Обычный пользователь' do
+    let(:user) { create(:user) }
+
+    it 'не видит пункт меню "Справочники"' do
+      within('.sidebar-menu') do
+        expect(page).to have_no_content('Справочники')
+      end
+    end
+
+    it 'перенаправляется на главную с сообщением об ошибке при попытке доступа' do
+      visit <%= path_prefix %>_path
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content('Доступ запрещён')
+    end
+  end
+end
