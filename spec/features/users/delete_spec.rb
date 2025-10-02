@@ -2,13 +2,8 @@ require 'rails_helper'
 
 RSpec.shared_examples 'delete_self_profile' do
   it 'не может удалить свой профиль' do
-    expect(page).to have_selector('#users-table')
-
-    within('#users-table') do
-      click_link(user.username)
-
-      expect(page).to have_no_content('Удалить')
-    end
+    open_from_table(table_id: 'users-table', text: user.username)
+    expect(page).to have_no_content('Удалить')
   end
 end
 
@@ -17,9 +12,7 @@ RSpec.describe 'Удаление пользователя', js: true, type: :sys
     logged_as(user)
     visit root_path
 
-    within('.sidebar-menu') do
-      click_link('Пользователи')
-    end
+    open_menu_links('Пользователи')
   end
 
   context 'Администратор' do
@@ -29,12 +22,7 @@ RSpec.describe 'Удаление пользователя', js: true, type: :sys
     let_it_be(:deleted_user) { create(:user, :discarded_user, username: 'deleted_user') }
 
     it 'удаляет пользователя' do
-      expect(page).to have_selector('#users-table')
-
-      within('#users-table') do
-        expect(page).to have_content(deleting_user.username)
-        click_link(deleting_user.username)
-      end
+      open_from_table(table_id: 'users-table', text: deleting_user.username)
 
       accept_confirm do
         click_on 'Удалить'
@@ -44,12 +32,7 @@ RSpec.describe 'Удаление пользователя', js: true, type: :sys
     end
 
     it 'восстанавливает пользователя' do
-      expect(page).to have_selector('#users-table')
-
-      within('#users-table') do
-        expect(page).to have_content(deleted_user.username)
-        click_link(deleted_user.username)
-      end
+      open_from_table(table_id: 'users-table', text: deleted_user.username)
 
       click_on 'Восстановить'
 
@@ -65,12 +48,7 @@ RSpec.describe 'Удаление пользователя', js: true, type: :sys
     let_it_be(:some_user) { create(:user) }
 
     it 'не может удалять других пользователей' do
-      expect(page).to have_selector('#users-table')
-
-      within('#users-table') do
-        expect(page).to have_content(some_user.username)
-        click_link(some_user.username)
-      end
+      open_from_table(table_id: 'users-table', text: some_user.username)
 
       expect(page).to have_no_content('Удалить')
     end

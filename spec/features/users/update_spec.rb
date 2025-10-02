@@ -2,12 +2,7 @@ require 'rails_helper'
 
 RSpec.shared_examples 'edit_user' do
   it 'успешно редактирует' do
-    expect(page).to have_selector('#users-table')
-
-    within('#users-table') do
-      expect(page).to have_content(edited_user.username)
-      click_link(edited_user.username)
-    end
+    open_from_table(table_id: 'users-table', text: edited_user.username)
 
     click_on 'Редактировать'
 
@@ -21,12 +16,7 @@ RSpec.shared_examples 'edit_user' do
   end
 
   it 'получает сообщение об ошибке не заполнив обязательных полей' do
-    expect(page).to have_selector('#users-table')
-
-    within('#users-table') do
-      expect(page).to have_content(edited_user.username)
-      click_link(edited_user.username)
-    end
+    open_from_table(table_id: 'users-table', text: edited_user.username)
 
     click_on 'Редактировать'
 
@@ -43,9 +33,7 @@ RSpec.describe 'Редактирование пользователя', js: true
     logged_as(user)
     visit root_path
 
-    within('.sidebar-menu') do
-      click_link('Пользователи')
-    end
+    open_menu_links('Пользователи')
   end
 
   context 'Администратор' do
@@ -73,12 +61,7 @@ RSpec.describe 'Редактирование пользователя', js: true
 
     it 'не может добавлять и редактировать других пользователей' do
       expect(page).to have_no_content('Добавить')
-      expect(page).to have_selector('#users-table')
-
-      within('#users-table') do
-        expect(page).to have_content(some_user.username)
-        click_link(some_user.username)
-      end
+      open_from_table(table_id: 'users-table', text: some_user.username)
 
       expect(page).to have_no_content('Редактировать')
     end

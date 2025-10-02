@@ -5,9 +5,7 @@ RSpec.describe 'Создание нового пользователя', js: tru
     logged_as(user)
     visit root_path
 
-    within('.sidebar-menu') do
-      click_link('Пользователи')
-    end
+    open_menu_links('Пользователи')
   end
 
   context 'Администратор' do

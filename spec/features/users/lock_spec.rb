@@ -2,12 +2,7 @@ require 'rails_helper'
 
 RSpec.shared_examples 'lock_self_profile' do
   it 'не может заблокировать свой профиль' do
-    expect(page).to have_selector('#users-table')
-
-    within('#users-table') do
-      expect(page).to have_content(user.username)
-      click_link(user.username)
-    end
+    open_from_table(table_id: 'users-table', text: user.username)
 
     expect(page).to have_no_content('Заблокировать')
   end
@@ -18,9 +13,7 @@ RSpec.describe 'Блокировка пользователя', js: true, type: 
     logged_as(user)
     visit root_path
 
-    within('.sidebar-menu') do
-      click_link('Пользователи')
-    end
+    open_menu_links('Пользователи')
   end
 
   context 'Администратор' do
@@ -35,12 +28,7 @@ RSpec.describe 'Блокировка пользователя', js: true, type: 
     end
 
     it 'блокирует пользователя' do
-      expect(page).to have_selector('#users-table')
-
-      within('#users-table') do
-        expect(page).to have_content(locking_user.username)
-        click_link(locking_user.username)
-      end
+      open_from_table(table_id: 'users-table', text: locking_user.username)
 
       click_on 'Заблокировать'
 
@@ -48,12 +36,7 @@ RSpec.describe 'Блокировка пользователя', js: true, type: 
     end
 
     it 'восстанавливает пользователя' do
-      expect(page).to have_selector('#users-table')
-
-      within('#users-table') do
-        expect(page).to have_content(locked_user.username)
-        click_link(locked_user.username)
-      end
+      open_from_table(table_id: 'users-table', text: locked_user.username)
 
       click_on 'Разблокировать'
 
@@ -73,12 +56,7 @@ RSpec.describe 'Блокировка пользователя', js: true, type: 
     end
 
     it 'не может заблокировать других пользователей' do
-      expect(page).to have_selector('#users-table')
-
-      within('#users-table') do
-        expect(page).to have_content(some_user.username)
-        click_link(some_user.username)
-      end
+      open_from_table(table_id: 'users-table', text: some_user.username)
       expect(page).to have_no_content('Заблокировать')
     end
 
