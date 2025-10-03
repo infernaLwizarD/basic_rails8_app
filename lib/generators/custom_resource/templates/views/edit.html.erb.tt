@@ -1,3 +1,1 @@
-<% model_var = resource_name %>
-<% path_prefix = route_path %>
-<%%= render 'form', back_path: <%= path_prefix %>_path(@<%= model_var %>) %>
+<%%= render 'form', back_path: <%= route_name %>_path(@<%= resource_name %>) %>

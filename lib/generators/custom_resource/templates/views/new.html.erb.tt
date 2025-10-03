@@ -1,2 +1,1 @@
-<% path_prefix = route_path %>
-<%%= render 'form', back_path: <%= path_prefix.pluralize %>_path %>
+<%%= render 'form', back_path: <%= route_path %>_path %>

@@ -1,27 +1,25 @@
-<% model_var = resource_name %>
-<% path_prefix = route_path %>
-<h6 class="top-card-title h5"><%= to_ruby_unicode_literal(resource_label.dup) %></h6>
+<h6 class="top-card-title h5"><%= resource_label %></h6>
 <div class="card card-primary card-outline">
   <div class="card-body form-card d-flex flex-column gap-3">
     <div class="form-field">
       <label class="form-label fw-medium">Наименование</label>
-      <div><%%= @<%= model_var %>.label %></div>
+      <div><%%= @<%= resource_name %>.label %></div>
     </div>
   </div>
 
   <div class="card-footer d-flex gap-2 align-items-center">
-    <%% if policy(@<%= model_var %>).update? %>
-      <%%= draw_edit_button(path: edit_<%= path_prefix %>_path(@<%= model_var %>)) %>
+    <%% if policy(@<%= resource_name %>).update? %>
+      <%%= draw_edit_button(path: edit_<%= route_name %>_path(@<%= resource_name %>)) %>
     <%% end %>
 
-    <%%= draw_back_button(path: <%= path_prefix.pluralize %>_path) %>
+    <%%= draw_back_button(path: <%= route_path %>_path) %>
 
     <div class="ms-auto d-flex gap-2">
-      <%% if policy(@<%= model_var %>).restore? %>
-        <%%= draw_restore_button(path: restore_<%= path_prefix %>_path(@<%= model_var %>)) %>
+      <%% if policy(@<%= resource_name %>).restore? %>
+        <%%= draw_restore_button(path: restore_<%= route_name %>_path(@<%= resource_name %>)) %>
       <%% end %>
-      <%% if policy(@<%= model_var %>).destroy? %>
-        <%%= draw_delete_button(path: @<%= model_var %>) %>
+      <%% if policy(@<%= resource_name %>).destroy? %>
+        <%%= draw_delete_button(path: @<%= resource_name %>) %>
       <%% end %>
     </div>
   </div>

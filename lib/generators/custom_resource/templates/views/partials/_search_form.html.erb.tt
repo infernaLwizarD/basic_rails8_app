@@ -7,6 +7,6 @@
       <%%= f.select(:by_state,
                    [['Активные', 'active'], ['Удалённые', 'discarded']],
                    { include_blank: '[Все]', selected: params.dig(:q, :by_state) },
-                   { class: 'form-control form-control-sm', onchange: 'this.form.requestSubmit();' }) %>
+                   { class: 'form-control form-control-sm w-100px', onchange: 'this.form.requestSubmit();' }) %>
     <%% end %>
   <%% end %>

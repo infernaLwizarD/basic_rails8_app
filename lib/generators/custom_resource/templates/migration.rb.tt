@@ -1,6 +1,6 @@
-class Create<%= table_name.camelize %> < ActiveRecord::Migration[8.0]
+class Create<%= route_path.camelize %> < ActiveRecord::Migration[8.0]
   def change
-    create_table :<%= table_name %> do |t|
+    create_table :<%= route_path %> do |t|
       t.string :label
       t.references :creator, null: false, foreign_key: { to_table: :users }
 

@@ -1,11 +1,8 @@
-<% model_var = resource_name %>
-<% model_var_plural = resource_name.pluralize %>
-<% path_prefix = route_path %>
 require 'rails_helper'
 
-RSpec.shared_examples 'edit_<%= model_var %>' do
+RSpec.shared_examples 'edit_<%= resource_name %>' do
   it 'успешно редактирует' do
-    open_from_table(table_id: '<%= model_var_plural %>-table', text: edited_<%= model_var %>.label)
+    open_from_table(table_id: '<%= resource_name_plural %>-table', text: edited_<%= resource_name %>.label)
 
     click_on 'Редактировать'
 
@@ -14,12 +11,12 @@ RSpec.shared_examples 'edit_<%= model_var %>' do
 
     click_on 'Сохранить'
 
-    expect(page).to have_content '<%= to_html_escape_numeric(resource_label_raw) %> отредактирован'
+    expect(page).to have_content '<%= update_success_message %>'
     expect(page).to have_content new_label
   end
 
   it 'получает сообщение об ошибке не заполнив обязательных полей' do
-    open_from_table(table_id: '<%= model_var_plural %>-table', text: edited_<%= model_var %>.label)
+    open_from_table(table_id: '<%= resource_name_plural %>-table', text: edited_<%= resource_name %>.label)
 
     click_on 'Редактировать'
 
@@ -31,7 +28,7 @@ RSpec.shared_examples 'edit_<%= model_var %>' do
   end
 end
 
-RSpec.describe 'Редактирование <%= to_ruby_unicode_literal(resource_label_genitive) %>', js: true, type: :system do
+RSpec.describe 'Редактирование <%= resource_label_genitive %>', js: true, type: :system do
   before do
     logged_as(user)
     visit root_path
@@ -40,23 +37,23 @@ RSpec.describe 'Редактирование <%= to_ruby_unicode_literal(resourc
   context 'Администратор' do
     let(:user) { create(:user, :admin) }
 
-    let_it_be(:some_<%= model_var %>) { create(:<%= model_var %>) }
+    let_it_be(:some_<%= resource_name %>) { create(:<%= resource_name %>) }
 
     before do
-      open_menu_links('Справочники', '<%= to_html_escape_numeric(resource_label_plural) %>')
+      open_menu_links('Справочники', '<%= resource_label_plural %>')
     end
 
-    context 'редактирование <%= to_ruby_unicode_literal(resource_label_genitive) %>' do
-      let(:edited_<%= model_var %>) { some_<%= model_var %> }
+    context 'редактирование <%= resource_label_genitive %>' do
+      let(:edited_<%= resource_name %>) { some_<%= resource_name %> }
 
-      it_behaves_like 'edit_<%= model_var %>'
+      it_behaves_like 'edit_<%= resource_name %>'
     end
   end
 
   context 'Обычный пользователь' do
     let(:user) { create(:user) }
 
-    let_it_be(:some_<%= model_var %>) { create(:<%= model_var %>) }
+    let_it_be(:some_<%= resource_name %>) { create(:<%= resource_name %>) }
 
     it 'не видит пункт меню "Справочники"' do
       within('.sidebar-menu') do
@@ -65,7 +62,7 @@ RSpec.describe 'Редактирование <%= to_ruby_unicode_literal(resourc
     end
 
     it 'перенаправляется на главную с сообщением об ошибке при попытке доступа' do
-      visit <%= path_prefix %>_path
+      visit <%= route_path %>_path
       expect(current_path).to eq(root_path)
       expect(page).to have_content('Доступ запрещён')
     end

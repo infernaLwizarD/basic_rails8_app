@@ -1,10 +1,9 @@
-<% model_var = resource_name %>
 FactoryBot.define do
-  factory :<%= model_var %>, class: '<%= class_name %>' do
+  factory :<%= resource_name %>, class: '<%= class_name %>' do
     label { Faker::Commerce.unique.product_name }
     association :creator, factory: :user
 
-    trait :discarded_<%= model_var %> do
+    trait :discarded_<%= resource_name %> do
       discarded_at { 1.hour.ago }
     end
 

@@ -1,119 +1,114 @@
-<% controller_class = "Web::#{module_name.present? ? module_name + '::' : ''}#{resource_class_name.pluralize}Controller" %>
-<% model_class = class_name %>
-<% model_var = resource_name %>
-<% model_var_plural = resource_name.pluralize %>
-<% path_prefix = route_path %>
-class <%= controller_class %> < Web::ApplicationController
-  before_action :find_and_authorize_<%= model_var %>, except: %i[new create index]
+class <%= controller_class_name %> < Web::ApplicationController
+  before_action :find_and_authorize_<%= resource_name %>, except: %i[new create index]
 
   def index
-    authorize <%= model_class %>
+    authorize <%= class_name %>
 
-    @q = policy_scope(<%= model_class %>).default_order.ransack(params[:q])
-    @<%= model_var_plural %>_cnt = @q.result.count
+    @q = policy_scope(<%= class_name %>).default_order.ransack(params[:q])
+    @<%= resource_name_plural %>_cnt = @q.result.count
 
-    @pagy, @<%= model_var_plural %> = pagy(@q.result)
+    @pagy, @<%= resource_name_plural %> = pagy(@q.result)
 
     @main_title = '<%= resource_label_plural %>'
-    set_<%= model_var %>_breadcrumbs
+    set_<%= resource_name %>_breadcrumbs
 
-    render_turbo_response('web/<%= controller_path %>/index', breadcrumbs: true)
+    render_turbo_response('web/<%= files_path %>/index', breadcrumbs: true)
   end
 
   def show
-    set_<%= model_var %>_breadcrumbs({ title: @<%= model_var %>.label,
-                                    path: <%= path_prefix %>_path(@<%= model_var %>) })
+    set_<%= resource_name %>_breadcrumbs({ title: @<%= resource_name %>.label,
+                                    path: <%= route_path %>_path(@<%= resource_name %>) })
 
-    render_turbo_response('web/<%= controller_path %>/show', breadcrumbs: true)
+    render_turbo_response('web/<%= files_path %>/show', breadcrumbs: true)
   end
 
   def new
-    authorize <%= model_class %>
+    authorize <%= class_name %>
 
-    @<%= model_var %> = <%= model_class %>.new
+    @<%= resource_name %> = <%= class_name %>.new
 
-    set_<%= model_var %>_breadcrumbs({ title: <%= new_resource_title.inspect %> })
+    set_<%= resource_name %>_breadcrumbs({ title: <%= new_resource_title.inspect %> })
 
-    render_turbo_response('web/<%= controller_path %>/new', breadcrumbs: true)
+    render_turbo_response('web/<%= files_path %>/new', breadcrumbs: true)
   end
 
   def edit
-    set_<%= model_var %>_breadcrumbs({ title: @<%= model_var %>.label,
-                                    path: <%= path_prefix %>_path(@<%= model_var %>) })
+    set_<%= resource_name %>_breadcrumbs({ title: @<%= resource_name %>.label,
+                                    path: <%= route_path %>_path(@<%= resource_name %>) })
 
-    render_turbo_response('web/<%= controller_path %>/edit', flash: true)
+    render_turbo_response('web/<%= files_path %>/edit', flash: true)
   end
 
   def create
-    authorize <%= model_class %>
+    authorize <%= class_name %>
 
-    @<%= model_var %> = <%= model_class %>.new(<%= model_var %>_params)
-    @<%= model_var %>.creator = current_user
+    @<%= resource_name %> = <%= class_name %>.new(<%= resource_name %>_params)
+    @<%= resource_name %>.creator = current_user
 
-    if @<%= model_var %>.save
+    if @<%= resource_name %>.save
       flash.now[:notice] = <%= create_success_message.inspect %>
-      set_<%= model_var %>_breadcrumbs({ title: @<%= model_var %>.label,
-                                      path: <%= path_prefix %>_path(@<%= model_var %>) })
-      render_turbo_response('web/<%= controller_path %>/show', breadcrumbs: true, flash: true)
+      set_<%= resource_name %>_breadcrumbs({ title: @<%= resource_name %>.label,
+                                      path: <%= route_path %>_path(@<%= resource_name %>) })
+      render_turbo_response('web/<%= files_path %>/show', breadcrumbs: true, flash: true)
     else
-      set_<%= model_var %>_breadcrumbs({ title: <%= new_resource_title.inspect %> })
-      render_turbo_response('web/<%= controller_path %>/new', breadcrumbs: true)
+      set_<%= resource_name %>_breadcrumbs({ title: <%= new_resource_title.inspect %> })
+      render_turbo_response('web/<%= files_path %>/new', breadcrumbs: true)
     end
   end
 
   def update
-    if @<%= model_var %>.update(<%= model_var %>_params)
-      flash.now[:notice] = <%= update_success_message.inspect %> if @<%= model_var %>.saved_changes?
+    if @<%= resource_name %>.update(<%= resource_name %>_params)
+      flash.now[:notice] = <%= update_success_message.inspect %> if @<%= resource_name %>.saved_changes?
 
-      render_turbo_response('web/<%= controller_path %>/show', flash: true)
+      render_turbo_response('web/<%= files_path %>/show', flash: true)
     else
-      render_turbo_response('web/<%= controller_path %>/edit')
+      render_turbo_response('web/<%= files_path %>/edit')
     end
   end
 
   def destroy
-    @<%= model_var %>.discard
+    @<%= resource_name %>.discard
     flash.now[:notice] = <%= destroy_message.inspect %>
 
-    render_turbo_response('web/<%= controller_path %>/show', flash: true)
+    render_turbo_response('web/<%= files_path %>/show', flash: true)
   end
 
   def restore
-    @<%= model_var %>.undiscard!
+    @<%= resource_name %>.undiscard!
     flash.now[:notice] = <%= restore_message.inspect %>
 
-    render_turbo_response('web/<%= controller_path %>/show', flash: true)
+    render_turbo_response('web/<%= files_path %>/show', flash: true)
   end
 
   def lock
-    @<%= model_var %>.lock_access!(send_instructions: false)
+    @<%= resource_name %>.lock_access!(send_instructions: false)
     flash.now[:notice] = <%= lock_message.inspect %>
 
-    render_turbo_response('web/<%= controller_path %>/show', flash: true)
+    render_turbo_response('web/<%= files_path %>/show', flash: true)
   end
 
   def unlock
-    @<%= model_var %>.unlock_access!
+    @<%= resource_name %>.unlock_access!
     flash.now[:notice] = <%= unlock_message.inspect %>
 
-    render_turbo_response('web/<%= controller_path %>/show', flash: true)
+    render_turbo_response('web/<%= files_path %>/show', flash: true)
   end
 
   private
 
-  def find_and_authorize_<%= model_var %>
-    @<%= model_var %> = <%= model_class %>.find(params[:id])
-    authorize @<%= model_var %>
+  def find_and_authorize_<%= resource_name %>
+    @<%= resource_name %> = <%= class_name %>.find(params[:id])
+    authorize @<%= resource_name %>
   end
 
-  def <%= model_var %>_params
+  def <%= resource_name %>_params
     attributes = %i[label]
-    params.expect(<%= model_path.gsub('/', '_') %>: attributes)
+    params.expect(<%= route_name %>: attributes)
   end
 
-  def set_<%= model_var %>_breadcrumbs(additional = nil)
+  def set_<%= resource_name %>_breadcrumbs(additional = nil)
     @breadcrumbs = [
-      { title: '<%= resource_label_plural %>', path: <%= path_prefix %>_path }
+      { title: '<%= resource_label_plural %>', path: <%= route_path %>_path }
     ]
     @breadcrumbs << additional if additional
   end
