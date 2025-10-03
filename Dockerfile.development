@@ -12,6 +12,9 @@ RUN apt-get update -qq && \
     libvips-dev \
     postgresql-client
 
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
+
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
