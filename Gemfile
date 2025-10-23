@@ -17,6 +17,7 @@ gem 'stimulus-rails'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem 'jbuilder'
 
+gem 'colorize'
 gem 'devise'
 gem 'discard', '~> 1.4'
 gem 'morph'
