@@ -101,8 +101,8 @@ jobs:
       - name: Run RSpec tests
         run: bundle exec rspec
 
-#      - name: Run Minitest system tests
-#        run: bin/rails test:system
+      #- name: Run Minitest system tests
+      #  run: bin/rails test:system
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v5

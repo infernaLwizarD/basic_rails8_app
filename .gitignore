@@ -11,6 +11,7 @@
 /.env*
 !/.env.sample
 !/.env.kamal.sample
+!/.env.production.sample
 
 # Ignore all logfiles and tempfiles.
 /log/*
