@@ -21,7 +21,7 @@ gem 'colorize'
 gem 'devise'
 gem 'discard', '~> 1.4'
 gem 'morph'
-gem 'pagy', '~> 9.4' # omit patch digit
+gem 'pagy', '~> 43.0' # omit patch digit
 gem 'pundit'
 gem 'ransack'
 
